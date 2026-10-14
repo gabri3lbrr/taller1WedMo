@@ -68,3 +68,309 @@
     position: relative;
     z-index: 2;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* CONTENEDOR DE LA BARRA */
+#scroll-progress-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 8px;
+
+    background: transparent;
+
+    z-index: 2000;
+    pointer-events: none;
+}
+/* BARRA QUE SE LLENA AL BAJAR */
+#scroll-progress-bar {
+    height: 100%;
+    width: 0%;
+
+    background: linear-gradient(
+        90deg,
+        #ff00cc 0%,
+        #00f0ff 50%,
+        #ff00cc 100%
+    );
+
+    opacity: 1;
+
+    box-shadow:
+        0 0 10px #00f0ff,
+        0 0 20px #ff00cc;
+
+    transition: width 0.075s linear;
+}
+
+
+
+/* SECCIÓN SWITCHES */
+.switches-section {
+    background: #160828;
+}
+
+/* Subtítulo */
+.switch-subtitulo {
+    color: #ff2d95;
+    letter-spacing: 3px;
+    font-size: 14px;
+}
+
+/* TARJETAS */
+.switch-card {
+    display: block;
+    width: 100%;
+    height: 100%;
+
+    padding: 30px;
+    text-align: left;
+
+    background: rgba(35, 15, 60, 0.9);
+    border: 2px solid #603080;
+    border-radius: 15px;
+
+    color: #e6d8f5;
+    cursor: pointer;
+
+    transition: all 0.3s ease;
+}
+
+/* Mouse encima */
+.switch-card:hover {
+    transform: translateY(-8px);
+
+    border-color: #ff2d95;
+
+    box-shadow:
+        0 0 15px rgba(255, 45, 149, 0.4);
+}
+
+/* Switch seleccionado */
+.switch-card.activo {
+    border-color: #ff2d95;
+
+    box-shadow:
+        0 0 20px rgba(255, 45, 149, 0.5);
+}
+
+/* Accesibilidad con teclado */
+.switch-card:focus-visible {
+    outline: 2px solid #00f0ff;
+    outline-offset: 4px;
+}
+
+/* Colores de los nombres */
+.switch-violet {
+    color: #ff2d95;
+}
+
+.switch-blue {
+    color: #00f0ff;
+}
+
+.switch-yellow {
+    color: #ffd166;
+}
+
+/* Tipo de switch */
+.switch-tipo {
+    color: #bfa7d8;
+    font-size: 14px;
+}
+
+/* Línea separadora */
+.switch-card hr {
+    border-color: #ff2d95;
+}
+
+/* BOTÓN DE PRUEBA */
+.switch-boton {
+    background: linear-gradient(
+        135deg,
+        #ff2d95,
+        #7b2ff7
+    );
+
+    color: white;
+    border: none;
+    border-radius: 12px;
+
+    font-weight: bold;
+    letter-spacing: 1px;
+
+    transition: all 0.3s ease;
+}
+
+.switch-boton:hover {
+    color: white;
+    transform: scale(1.05);
+
+    box-shadow:
+        0 0 20px #ff2d95;
+}
+
+
+
+
+/* CONTENIDO SOBRE EL VIDEO */
+.hero .contenido {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    padding: 90px 12px 50px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 25px;
+}
+
+.hero__title {
+    margin: 0;
+}
+
+/* CONTENEDOR DEL TECLADO */
+.teclado-contenedor {
+    width: min(95%, 1050px);
+    overflow-x: auto;
+    padding: 15px 10px 25px;
+}
+
+/* CHASIS DEL TECLADO */
+.teclado-interactivo {
+    width: 100%;
+    min-width: 760px;
+    padding: 22px;
+
+    background: linear-gradient(
+        145deg,
+        #252039,
+        #0b0b18
+    );
+
+    border: 2px solid #00f0ff;
+    border-radius: 16px;
+
+    box-shadow:
+        0 0 22px #00f0ff55,
+        0 0 45px #ff007f33,
+        inset 0 0 18px #00f0ff18;
+}
+
+/* FILAS DE TECLAS */
+.teclado-fila {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 7px;
+}
+
+.teclado-fila:last-child {
+    margin-bottom: 0;
+}
+
+/* TECLAS */
+.tecla {
+    flex: var(--ancho) 1 0;
+    min-width: 0;
+    height: 53px;
+
+    background: linear-gradient(
+        180deg,
+        #29283e,
+        #101020
+    );
+
+    border: 1px solid #505078;
+    border-bottom: 4px solid #090912;
+    border-radius: 7px;
+
+    color: #8ceeff;
+    font-size: 12px;
+    font-weight: bold;
+
+    cursor: pointer;
+    user-select: none;
+
+    box-shadow: inset 0 0 8px #00f0ff18;
+    transition: transform 0.08s, box-shadow 0.08s;
+}
+
+/* TECLAS ROSADAS */
+.tecla-rosa {
+    color: #ff80c5;
+    border-color: #ff007f;
+    box-shadow: 0 0 10px #ff007f55;
+}
+
+/* TECLAS CIAN */
+.tecla-cian {
+    color: #00f0ff;
+    border-color: #00f0ff;
+    box-shadow: 0 0 10px #00f0ff55;
+}
+
+/* EFECTO AL PRESIONAR */
+.tecla.presionada,
+.tecla:active {
+    transform: translateY(3px);
+    border-bottom-width: 1px;
+    background: #43305c;
+
+    box-shadow:
+        0 0 15px #ff007f,
+        inset 0 0 15px #00f0ff66;
+}
+
+/* PERILLA DECORATIVA */
+.teclado-perilla {
+    flex: 1 1 0;
+    height: 53px;
+    min-width: 0;
+
+    border-radius: 50%;
+    border: 3px solid #ff007f;
+
+    background: radial-gradient(
+        circle,
+        #ff007f 0%,
+        #401d50 40%,
+        #101020 75%
+    );
+
+    box-shadow: 0 0 13px #ff007f88;
+}
+
+/* ACCESIBILIDAD */
+.tecla:focus-visible {
+    outline: 2px solid white;
+    outline-offset: 2px;
+}
+
+/* EN CELULARES SE PUEDE DESPLAZAR
+   HORIZONTALMENTE EL TECLADO */
+@media (max-width: 768px) {
+    .teclado-contenedor {
+        width: 100%;
+    }
+
+    .teclado-interactivo {
+        padding: 14px;
+    }
+}
