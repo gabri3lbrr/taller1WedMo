@@ -638,3 +638,10 @@ navToggle.addEventListener("click", () => {
   navToggle.setAttribute("aria-label", abierto ? "Cerrar menú" : "Abrir menú");
 });
 menu.querySelectorAll("a").forEach((a) => a.addEventListener("click", cerrarMenu));
+
+
+
+function confirmarReserva(event) {
+  event.preventDefault();
+  alert('¡Reserva completada! Tu orden de KEYWAVE 75 ha sido registrada con éxito.');
+}

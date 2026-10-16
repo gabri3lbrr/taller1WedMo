@@ -132,7 +132,39 @@
     <!-- RESERVA · pendiente (ver TAREAS.md) -->
     <section class="pendiente" id="reservar">
       <h2>Reserva tu teclado</h2>
-      <p>Sección en construcción.</p>
+      <section class="reservar-section" id="reservar">
+      <div class="reservar-card">
+        <h2>Reserva tu KEYWAVE 75</h2>
+        <p class="reservar-lead">Garantía de 2 años, reemplazo de switches y envío prioritario incluido.</p>
+
+        <div class="reservar-precio">
+          <span class="precio-actual">$189.99</span>
+          <span class="precio-anterior">$249.99</span>
+        </div>
+
+        <form id="form-reserva" class="reservar-form" onsubmit="confirmarReserva(event)">
+          <div class="reservar-selects">
+            <select required class="reserva-input">
+              <option value="">Selecciona Layout</option>
+              <option value="es">Español (Con Ñ)</option>
+              <option value="us">Inglés US</option>
+            </select>
+            <select required class="reserva-input">
+              <option value="">Selecciona Switch</option>
+              <option value="violet">Neon Violet (Tactile)</option>
+              <option value="blue">Plasma Blue (Linear)</option>
+              <option value="yellow">Cyber Yellow (Silent Thock)</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn">
+            CONFIRMAR RESERVA
+          </button>
+        </form>
+
+        <p class="reserva-stock">Quedan exactamente 14 unidades disponibles en el inventario.</p>
+      </div>
+    </section>
     </section>
   </main>
 
