@@ -17,11 +17,11 @@ const LAYOUT = [
   [["Esc", "Escape", 1], ...Array.from({ length: 12 }, (_, i) => ["F" + (i + 1), "F" + (i + 1), 1]),
     ["Impr", "PrintScreen", 1], ["Supr", "Delete", 1], ["KNOB"]],
   [["º", "Backquote", 1, "º"], ...DIGITS, ["'", "Minus", 1, "'"], ["¡", "Equal", 1, "¡"],
-    ["Borrar", "Backspace", 2], ["Inicio", "Home", 1]],
+    ["Borrar", "Backspace", 2], ["Inic", "Home", 1]],
   [["Tab", "Tab", 1.5], ...LETTERS("QWERTYUIOP"), ["`", "BracketLeft", 1, "`"], ["+", "BracketRight", 1, "+"],
-    ["Ç", "Backslash", 1.5, "ç"], ["RePág", "PageUp", 1]],
-  [["Bloq Mayús", "CapsLock", 1.75], ...LETTERS("ASDFGHJKL"), ["Ñ", "Semicolon", 1, "ñ"], ["´", "Quote", 1, "´"],
-    ["Intro", "Enter", 2.25], ["AvPág", "PageDown", 1]],
+    ["Ç", "Backslash", 1.5, "ç"], ["RePg", "PageUp", 1]],
+  [["Mayús", "CapsLock", 1.75], ...LETTERS("ASDFGHJKL"), ["Ñ", "Semicolon", 1, "ñ"], ["´", "Quote", 1, "´"],
+    ["Intro", "Enter", 2.25], ["AvPg", "PageDown", 1]],
   [["Shift", "ShiftLeft", 2.25], ...LETTERS("ZXCVBNM"), [",", "Comma", 1, ","], [".", "Period", 1, "."], ["-", "Slash", 1, "-"],
     ["Shift", "ShiftRight", 1.75], ["↑", "ArrowUp", 1], ["Fin", "End", 1]],
   [["Ctrl", "ControlLeft", 1.25], ["Win", "MetaLeft", 1.25], ["Alt", "AltLeft", 1.25], ["", "Space", 6.25, " "],
@@ -61,7 +61,7 @@ LAYOUT.forEach((row, y) => {
       + (TECLAS_CIAN.has(code) ? " key--cian" : "");
     el.style.setProperty("--w", w);
     el.dataset.code = code;
-    el.innerHTML = `<span class="cap"><span class="legend">${legend}</span></span>`;
+    el.innerHTML = `<span class="cap"><span class="legend"><span class="legend__txt">${legend}</span></span></span>`;
     rowEl.append(el);
     const k = { el, code, x: x + w / 2, y: y + (y > 0 ? 0.2 : 0) + 0.5, l: 0, h: 330, char, down: false };
     keys.push(k);
@@ -70,6 +70,22 @@ LAYOUT.forEach((row, y) => {
   });
   board.append(rowEl);
 });
+
+// Ajuste de leyendas: si un nombre no cabe en la cara de su tecla, se achica lo justo.
+// La proporción no depende del tamaño de pantalla (todo escala con --u), así que basta
+// con medir una vez cuando la fuente terminó de cargar.
+function ajustarLeyendas() {
+  for (const k of keys) {
+    const caja = k.el.querySelector(".legend");
+    const texto = caja.firstChild;
+    k.el.style.removeProperty("--ajuste");
+    const disponible = caja.clientWidth * 0.86;
+    if (texto.offsetWidth > disponible) {
+      k.el.style.setProperty("--ajuste", (disponible / texto.offsetWidth).toFixed(3));
+    }
+  }
+}
+document.fonts.ready.then(ajustarLeyendas);
 
 /* ---------------------------------------------------------
    2. Motor de luz (animación propia del equipo)

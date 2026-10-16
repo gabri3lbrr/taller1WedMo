@@ -371,17 +371,19 @@ a { color: inherit; }
     linear-gradient(180deg, color-mix(in srgb, var(--top) 90%, #fff), var(--top));
   box-shadow: inset 0 1px 0 #ffffff2e, inset 0 -1px 2px #0007;
 }
-/* leyenda RGB: la letra es la luz; siempre de color y más brillante al iluminarse */
+/* leyenda RGB: la letra es la luz; siempre de color y más brillante al iluminarse.
+   Ocupa exactamente la cara superior del keycap y se centra ahí. */
 .legend {
-  position: relative;
-  font: 400 calc(var(--u) * .18)/1 var(--ui);
+  position: absolute;
+  left: 9%; right: 9%; top: 6%; bottom: 18%;
+  display: flex; align-items: center; justify-content: center;
+  font: 400 calc(var(--u) * .16 * var(--ajuste, 1))/1 var(--ui);
   color: hsl(var(--h) 100% calc(60% + var(--l) * 30%));
   text-shadow: 0 0 calc(var(--u) * (.1 + var(--l) * .35)) hsl(var(--h) 100% 55%);
   opacity: calc(.72 + var(--l) * .28);
   white-space: nowrap;
 }
-.key--alpha .cap { justify-content: center; align-items: center; padding: 0 0 calc(var(--u) * .1); }
-.key--alpha .legend { font-size: calc(var(--u) * .26); }
+.key--alpha .legend { font-size: calc(var(--u) * .24 * var(--ajuste, 1)); }
 .key.is-down .cap {
   transform: translateY(calc(var(--u) * .055));
   box-shadow:
