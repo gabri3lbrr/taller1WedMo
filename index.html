@@ -1,280 +1,164 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
-    <title>teclado</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" >
-    <link rel="stylesheet" href="css/style.css">
-    <script src="js/script.js" defer></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KEYWAVE 75 · Teclado mecánico</title>
+  <meta name="description" content="KEYWAVE 75: teclado mecánico 75% con retroiluminación que reacciona a cada pulsación.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Monoton&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
 </head>
+<body>
 
-<body style="background-color: #160828; color: white;">
+  <!-- Barra de progreso del scroll -->
+  <div id="scroll-progress-container" aria-hidden="true">
+    <div id="scroll-progress-bar"></div>
+  </div>
 
-    <div id="scroll-progress-container" class="fixed top-0 left-0 w-full h-1.5 z-[100] bg-black/60 pointer-events-none">
-    <div id="scroll-progress-bar" class="h-full bg-gradient-to-r from-pink-500 via-cyan-400 to-pink-500 w-0 transition-all duration-75 shadow-[0_0_12px_#00f0ff]"></div>
-    </div>
+  <!-- Barra de navegación -->
+  <header class="nav" id="nav">
+    <a class="nav__logo" href="#inicio" aria-label="KEYWAVE, inicio">KEYWAVE</a>
+    <button class="nav__toggle" id="nav-toggle" aria-expanded="false" aria-controls="menu-principal" aria-label="Abrir menú">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="nav__links" id="menu-principal" aria-label="Secciones">
+      <a href="#por-dentro">Por dentro</a>
+      <a href="#switches">Switches</a>
+      <a href="#specs">Specs</a>
+      <a class="btn btn--small" href="#reservar">Reservar</a>
+    </nav>
+  </header>
 
-    <!-- Barra de navegación -->
-    <header
-        class="navbar navbar-expand-lg fixed-top"
-        data-bs-theme="dark"
-        style="background-color: #210C3A;"
-    >
+  <main>
+    <!-- HERO: video synthwave + cielo animado + teclado interactivo -->
+    <section class="hero" id="inicio">
+      <div class="scene" id="scene" aria-hidden="true">
+        <canvas class="scene__stars" id="stars"></canvas>
+        <div class="scene__sun-glow"></div>
+        <div class="scene__sun" id="sun"></div>
+        <video class="scene__video" id="video-fondo" autoplay muted loop playsinline preload="auto" poster="assets/video/fondo-synthwave.jpg">
+          <source src="assets/video/fondo-synthwave.mp4" type="video/mp4">
+        </video>
+      </div>
 
-        <div class="container-fluid px-4">
+      <div class="hero__content">
+        <h1 class="hero__title">KEYWAVE<span>75</span></h1>
+        <p class="hero__lead">Teclado mecánico 75% con luz que responde a cada tecla que tocas.</p>
 
-            <!-- Logo -->
-            <a class="navbar-brand fw-bold text-white" href="#inicio">
-              TECLADO
-            </a>
+        <output class="screen" id="screen" aria-live="off">
+          <span class="screen__text" id="screen-text"></span><span class="screen__caret"></span>
+        </output>
 
-            <!-- Boton  moviles -->
-            <button
-                class="navbar-toggler"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#menuPrincipal"
-                aria-controls="menuPrincipal"
-                aria-expanded="false"
-                aria-label="Abrir menú"
-            >
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <!-- Menu de navegacion -->
-            <nav class="collapse navbar-collapse" id="menuPrincipal">
-
-                <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-3">
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="#por-dentro">
-                            Por dentro
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="#switches">
-                            Switches
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="#specs">
-                            Specs
-                        </a>
-                    </li>
-
-                    <li class="nav-item ms-lg-3">
-                        <a
-                            class="btn btn-warning rounded-pill px-4"
-                            href="#inicio"
-                        >
-                            Inicio
-                        </a>
-                    </li>
-
-                </ul>
-
-            </nav>
-
+        <div class="board-wrap" id="board-wrap">
+          <div class="board" id="teclado-interactivo" role="img" aria-label="Teclado KEYWAVE 75 interactivo. Escribe con tu teclado o toca las teclas para iluminarlas."></div>
         </div>
 
-    </header>
-
-
-    <div id="scroll-progress-container">
-    <div id="scroll-progress-bar"></div>
-    </div>
-    <main >
-
-    
-
-    
-
-        <section id="inicio" class="hero">
-            <video autoplay muted loop playsinline>
-                <source src="extra/video/🟪🎶 Neon Purple Grid Retrowave 80s Sci fi VJ Loop Video Background for Edits.mp4">
-            </video>
-
-            <div class="contenido">
-
-            <!-- TÍTULO PRINCIPAL -->
-            <h1 class="hero__title">
-                TECLADO
-            </h1>
-
-            <!-- TECLADO INTERACTIVO -->
-            <div class="teclado-contenedor">
-
-                <div id="teclado-interactivo"
-                    class="teclado-interactivo"
-                    role="group"
-                    aria-label="Teclado KEYWAVE interactivo">
-
-                    <!-- JavaScript genera aquí las teclas -->
-
-                </div>
-
-            </div>
-
-</div>
-            
-           
-        </section>
-
-        <section id="por-dentro" class="min-vh-100">
-            <h2>Por dentro</h2>
-        </section>
-
-        
-<!-- SECCIÓN SWITCHES -->
-        <section id="switches" class="switches-section py-5">
-
-            <div class="container py-5">
-
-                <!-- Título -->
-                <div class="text-center mb-5">
-
-                    <p class="switch-subtitulo">
-                        // LABORATORIO DE ACÚSTICA
-                    </p>
-
-                    <h2 class="fw-bold text-white">
-                        SELECCIONA TU SWITCH
-                    </h2>
-
-                    <p class="text-secondary">
-                        Prueba los diferentes perfiles de sonido.
-                    </p>
-
-                </div>
-
-                <!-- Tarjetas de switches -->
-                <div class="row g-4">
-
-                    <!-- SWITCH 1: TÁCTIL -->
-                    <div class="col-12 col-md-4">
-
-                        <button type="button"
-                                class="switch-card activo"
-                                data-switch="tactile"
-                                aria-pressed="true">
-
-                            <h3 class="switch-violet">
-                                Neon Violet
-                            </h3>
-
-                            <p class="switch-tipo">
-                                Tactile Clicky
-                            </p>
-
-                            <p>
-                                Sonido nítido y respuesta táctil
-                                marcada. Ideal para programación.
-                            </p>
-
-                            <hr>
-
-                            <p>Fuerza: 55g</p>
-                            <p>Sonido: Sharp Click</p>
-
-                        </button>
-
-                    </div>
-
-                    <!-- SWITCH 2: LINEAL -->
-                    <div class="col-12 col-md-4">
-
-                        <button type="button"
-                                class="switch-card"
-                                data-switch="linear"
-                                aria-pressed="false">
-
-                            <h3 class="switch-blue">
-                                Plasma Blue
-                            </h3>
-
-                            <p class="switch-tipo">
-                                Linear Fast
-                            </p>
-
-                            <p>
-                                Pulsación ultrasuave sin bache
-                                táctil. Diseñado para gaming.
-                            </p>
-
-                            <hr>
-
-                            <p>Fuerza: 45g</p>
-                            <p>Sonido: Clack Suave</p>
-
-                        </button>
-
-                    </div>
-
-                    <!-- SWITCH 3: SILENCIOSO -->
-                    <div class="col-12 col-md-4">
-
-                        <button type="button"
-                                class="switch-card"
-                                data-switch="silent"
-                                aria-pressed="false">
-
-                            <h3 class="switch-yellow">
-                                Cyber Yellow
-                            </h3>
-
-                            <p class="switch-tipo">
-                                Silent Thock
-                            </p>
-
-                            <p>
-                                Switch lineal amortiguado.
-                                Sonido profundo y suave.
-                            </p>
-
-                            <hr>
-
-                            <p>Fuerza: 50g</p>
-                            <p>Sonido: Deep Thock</p>
-
-                        </button>
-
-                    </div>
-
-                </div>
-
-
-                <!-- SWITCH SELECCIONADO -->
-                <div class="text-center mt-4">
-
-                    <p id="switch-estado" class="text-white">
-                        Seleccionado: Neon Violet
-                    </p>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <section id="specs" class="min-vh-100">
-            <h2>Especificaciones</h2>
-        </section>
-
-        <section id="reservar" class="min-vh-100">
-            <h2>Reserva tu teclado</h2>
-        </section>
-
-    </main>
-
-
-
-    
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-
+        <div class="modes" role="radiogroup" aria-label="Modo de luz">
+          <button class="mode is-active" role="radio" aria-checked="true" data-mode="reactivo">Reactivo</button>
+          <button class="mode" role="radio" aria-checked="false" data-mode="ola">Ola</button>
+          <button class="mode" role="radio" aria-checked="false" data-mode="respira">Respiración</button>
+          <button class="mode" role="radio" aria-checked="false" data-mode="estatico">Estático</button>
+          <button class="sound" id="sound" aria-pressed="true" title="Sonido de teclas">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z"/><path class="sound__waves" d="M16 9a4 4 0 0 1 0 6M18.5 6.5a7.5 7.5 0 0 1 0 11"/></svg>
+            <span class="sr-only">Sonido</span>
+          </button>
+        </div>
+        <p class="hero__hint">Escribe con tu teclado, toca las teclas o gira la perilla.</p>
+      </div>
+    </section>
+
+    <!-- POR DENTRO: vista explosionada controlada por el scroll -->
+    <section class="inside" id="por-dentro">
+      <div class="inside__sticky">
+        <div class="inside__copy">
+          <h2>Cuatro capas, un sonido</h2>
+          <p class="inside__intro">Baja para separar el teclado y ver qué hay debajo de cada tecla.</p>
+          <ol class="layers-list" id="layers-list">
+            <li data-layer="0"><strong>Keycaps PBT doubleshot</strong><span>Leyendas translúcidas que dejan pasar la luz y no se borran con el uso.</span></li>
+            <li data-layer="1"><strong>Switches hot-swap</strong><span>Cámbialos sin soldar. Vienen lubricados de fábrica.</span></li>
+            <li data-layer="2"><strong>Placa con gasket y espuma</strong><span>Absorbe el golpe y deja un sonido grave y redondo.</span></li>
+            <li data-layer="3"><strong>Carcasa de aluminio CNC</strong><span>1,6 kg. No se mueve de la mesa.</span></li>
+          </ol>
+        </div>
+        <div class="explode" aria-hidden="true">
+          <div class="explode__stage" id="explode">
+            <div class="layer layer--caps" data-layer="0"><div class="layer__grid" id="caps-grid"></div></div>
+            <div class="layer layer--switches" data-layer="1"><div class="layer__grid" id="switch-grid"></div></div>
+            <div class="layer layer--plate" data-layer="2"></div>
+            <div class="layer layer--case" data-layer="3"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SWITCHES: cambian el color de la luz y el sonido del teclado -->
+    <section class="switches" id="switches">
+      <div class="switches__head">
+        <h2>Selecciona tu switch</h2>
+        <p>Cada switch cambia el color de la luz y el sonido del teclado de arriba. Tócalos para escucharlos.</p>
+      </div>
+
+      <div class="switches__picker" role="radiogroup" aria-label="Tipo de switch">
+        <button type="button" class="switch-card activo" role="radio" aria-checked="true" data-switch="tactile" style="--sw:330">
+          <span class="switch__model" aria-hidden="true"><span class="switch__stem"></span><span class="switch__housing"></span></span>
+          <span class="switch__name">Neon Violet</span>
+          <span class="switch__tipo">Tactile Clicky</span>
+          <span class="switch__desc">Sonido nítido y respuesta táctil marcada. Ideal para programar.</span>
+          <span class="switch__datos"><span>Fuerza: 55 g</span><span>Sonido: Sharp Click</span></span>
+        </button>
+
+        <button type="button" class="switch-card" role="radio" aria-checked="false" data-switch="linear" style="--sw:184">
+          <span class="switch__model" aria-hidden="true"><span class="switch__stem"></span><span class="switch__housing"></span></span>
+          <span class="switch__name">Plasma Blue</span>
+          <span class="switch__tipo">Linear Fast</span>
+          <span class="switch__desc">Pulsación ultrasuave sin bache táctil. Diseñado para gaming.</span>
+          <span class="switch__datos"><span>Fuerza: 45 g</span><span>Sonido: Clack Suave</span></span>
+        </button>
+
+        <button type="button" class="switch-card" role="radio" aria-checked="false" data-switch="silent" style="--sw:43">
+          <span class="switch__model" aria-hidden="true"><span class="switch__stem"></span><span class="switch__housing"></span></span>
+          <span class="switch__name">Cyber Yellow</span>
+          <span class="switch__tipo">Silent Thock</span>
+          <span class="switch__desc">Switch lineal amortiguado. Sonido profundo y suave.</span>
+          <span class="switch__datos"><span>Fuerza: 50 g</span><span>Sonido: Deep Thock</span></span>
+        </button>
+      </div>
+
+      <p class="switch-estado" id="switch-estado" aria-live="polite">Seleccionado: Neon Violet</p>
+    </section>
+
+    <!-- ESPECIFICACIONES -->
+    <section class="specs" id="specs">
+      <h2>Ficha técnica</h2>
+      <dl class="specs__list">
+        <div><dt>Formato</dt><dd>75%, 84 teclas + perilla</dd></div>
+        <div><dt>Conexión</dt><dd>USB-C, Bluetooth 5.3 y 2,4 GHz</dd></div>
+        <div><dt>Batería</dt><dd>4000 mAh, hasta 200 h sin luz</dd></div>
+        <div><dt>Luz</dt><dd>RGB por tecla, 4 modos</dd></div>
+        <div><dt>Polling</dt><dd>1000 Hz con cable</dd></div>
+        <div><dt>Peso</dt><dd>1,6 kg</dd></div>
+      </dl>
+    </section>
+
+    <!-- RESERVA -->
+    <section class="cta" id="reservar">
+      <h2>Primera tanda: 300 unidades</h2>
+      <p class="cta__price"><span id="precio" data-precio="129990">$129.990</span> <small>CLP</small></p>
+      <button class="btn" id="reserve">Reservar el mío</button>
+      <p class="cta__note" id="reserve-note">Envío a todo Chile en noviembre.</p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>KEYWAVE es un producto ficticio. Taller 1 · Desarrollo de Soluciones Web/Móvil · UCN 2026</p>
+  </footer>
+
+  <!-- GSAP: solo para animaciones de apoyo (specs y precio). Las animaciones principales son propias. -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="js/script.js"></script>
 </body>
 </html>
