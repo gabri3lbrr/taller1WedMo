@@ -50,6 +50,7 @@
 
         <output class="screen" id="screen" aria-live="off">
           <span class="screen__text" id="screen-text"></span><span class="screen__caret"></span>
+          <span class="screen__ppm" id="screen-ppm"><b>0</b> ppm</span>
         </output>
 
         <div class="board-wrap" id="board-wrap">
@@ -70,28 +71,10 @@
       </div>
     </section>
 
-    <!-- POR DENTRO: vista explosionada controlada por el scroll -->
-    <section class="inside" id="por-dentro">
-      <div class="inside__sticky">
-        <div class="inside__copy">
-          <h2>Cuatro capas, un sonido</h2>
-          <p class="inside__intro">Baja para separar el teclado y ver qué hay debajo de cada tecla.</p>
-          <ol class="layers-list" id="layers-list">
-            <li data-layer="0"><strong>Keycaps PBT doubleshot</strong><span>Leyendas translúcidas que dejan pasar la luz y no se borran con el uso.</span></li>
-            <li data-layer="1"><strong>Switches hot-swap</strong><span>Cámbialos sin soldar. Vienen lubricados de fábrica.</span></li>
-            <li data-layer="2"><strong>Placa con gasket y espuma</strong><span>Absorbe el golpe y deja un sonido grave y redondo.</span></li>
-            <li data-layer="3"><strong>Carcasa de aluminio CNC</strong><span>1,6 kg. No se mueve de la mesa.</span></li>
-          </ol>
-        </div>
-        <div class="explode" aria-hidden="true">
-          <div class="explode__stage" id="explode">
-            <div class="layer layer--caps" data-layer="0"><div class="layer__grid" id="caps-grid"></div></div>
-            <div class="layer layer--switches" data-layer="1"><div class="layer__grid" id="switch-grid"></div></div>
-            <div class="layer layer--plate" data-layer="2"></div>
-            <div class="layer layer--case" data-layer="3"></div>
-          </div>
-        </div>
-      </div>
+    <!-- POR DENTRO · pendiente (ver TAREAS.md) -->
+    <section class="pendiente" id="por-dentro">
+      <h2>Por dentro</h2>
+      <p>Sección en construcción.</p>
     </section>
 
     <!-- SWITCHES: cambian el color de la luz y el sonido del teclado -->
@@ -130,25 +113,16 @@
       <p class="switch-estado" id="switch-estado" aria-live="polite">Seleccionado: Neon Violet</p>
     </section>
 
-    <!-- ESPECIFICACIONES -->
-    <section class="specs" id="specs">
-      <h2>Ficha técnica</h2>
-      <dl class="specs__list">
-        <div><dt>Formato</dt><dd>75%, 84 teclas + perilla</dd></div>
-        <div><dt>Conexión</dt><dd>USB-C, Bluetooth 5.3 y 2,4 GHz</dd></div>
-        <div><dt>Batería</dt><dd>4000 mAh, hasta 200 h sin luz</dd></div>
-        <div><dt>Luz</dt><dd>RGB por tecla, 4 modos</dd></div>
-        <div><dt>Polling</dt><dd>1000 Hz con cable</dd></div>
-        <div><dt>Peso</dt><dd>1,6 kg</dd></div>
-      </dl>
+    <!-- ESPECIFICACIONES · pendiente (ver TAREAS.md) -->
+    <section class="pendiente" id="specs">
+      <h2>Especificaciones</h2>
+      <p>Sección en construcción.</p>
     </section>
 
-    <!-- RESERVA -->
-    <section class="cta" id="reservar">
-      <h2>Primera tanda: 300 unidades</h2>
-      <p class="cta__price"><span id="precio" data-precio="129990">$129.990</span> <small>CLP</small></p>
-      <button class="btn" id="reserve">Reservar el mío</button>
-      <p class="cta__note" id="reserve-note">Envío a todo Chile en noviembre.</p>
+    <!-- RESERVA · pendiente (ver TAREAS.md) -->
+    <section class="pendiente" id="reservar">
+      <h2>Reserva tu teclado</h2>
+      <p>Sección en construcción.</p>
     </section>
   </main>
 
@@ -156,9 +130,6 @@
     <p>KEYWAVE es un producto ficticio. Taller 1 · Desarrollo de Soluciones Web/Móvil · UCN 2026</p>
   </footer>
 
-  <!-- GSAP: solo para animaciones de apoyo (specs y precio). Las animaciones principales son propias. -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script src="js/script.js"></script>
 </body>
 </html>

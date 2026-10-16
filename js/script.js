@@ -1,7 +1,6 @@
 /* =========================================================
    KEYWAVE 75 — interacción y animaciones
-   Animaciones principales hechas a mano (sin librerías).
-   GSAP solo se usa como apoyo en specs y precio (sección 11).
+   Hecho a mano, sin librerías.
    ========================================================= */
 
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -29,6 +28,10 @@ const LAYOUT = [
     ["AltGr", "AltRight", 1], ["Fn", "Fn", 1], ["Ctrl", "ControlRight", 1], ["←", "ArrowLeft", 1], ["↓", "ArrowDown", 1], ["→", "ArrowRight", 1]],
 ];
 
+// Keycaps de acento (los colores que eligió Gabriel en su versión)
+const TECLAS_ROSA = new Set(["Escape", "Enter", "Space"]);
+const TECLAS_CIAN = new Set(["KeyW", "KeyA", "KeyS", "KeyD", "Delete"]);
+
 // teclas físicas que no existen en el layout ANSI → se iluminan en su vecina
 const CODE_ALIAS = { IntlBackslash: "ShiftLeft", NumpadEnter: "Enter", OSLeft: "MetaLeft", MetaRight: "AltRight", ContextMenu: "Fn" };
 
@@ -52,7 +55,10 @@ LAYOUT.forEach((row, y) => {
       return;
     }
     const el = document.createElement("div");
-    el.className = "key" + (w > 1.2 ? " key--wide" : "") + (legend.length > 2 ? " key--mod" : "");
+    el.className = "key"
+      + (legend.length === 1 ? " key--alpha" : " key--mod")
+      + (TECLAS_ROSA.has(code) ? " key--rosa" : "")
+      + (TECLAS_CIAN.has(code) ? " key--cian" : "");
     el.style.setProperty("--w", w);
     el.dataset.code = code;
     el.innerHTML = `<span class="cap"><span class="legend">${legend}</span></span>`;
@@ -82,6 +88,12 @@ const state = {
 };
 const ripples = [];
 
+// "Linterna": el cursor ilumina suavemente las teclas cercanas (solo con mouse)
+const linterna = { x: 0, y: 0, fuerza: 0, objetivo: 0 };
+// Inclinación 3D del teclado según la posición del mouse
+const inclinacion = { rx: 0, ry: 0, objetivoX: 0, objetivoY: 0 };
+const boardWrap = document.getElementById("board-wrap");
+
 function addRipple(x, y, opts = {}) {
   ripples.push({ x, y, t0: performance.now() / 1000, speed: 13, width: 1.1, life: 0.9, amp: 1, ...opts });
   if (ripples.length > 24) ripples.shift();
@@ -95,6 +107,8 @@ function hueLerp(a, b, f) {
 function lightFrame(nowMs) {
   const t = nowMs / 1000;
   state.hue = hueLerp(state.hue, state.targetHue, 0.08);
+  linterna.fuerza += (linterna.objetivo - linterna.fuerza) * 0.12;
+  let sumaLuz = 0, sumaX = 0, sumaY = 0; // para el color promedio
 
   for (let i = ripples.length - 1; i >= 0; i--) {
     if (t - ripples[i].t0 > ripples[i].life) ripples.splice(i, 1);
@@ -120,6 +134,11 @@ function lightFrame(nowMs) {
       wave += r.amp * Math.exp(-((d - radius) ** 2) / (r.width * r.width)) * (1 - age / r.life);
     }
 
+    if (linterna.fuerza > 0.01) {
+      const d2 = (k.x - linterna.x) ** 2 + (k.y - linterna.y) ** 2;
+      wave += 0.42 * linterna.fuerza * Math.exp(-d2 / 2.6);
+    }
+
     const l = k.down ? 1 : clamp(base + wave);
     if (Math.abs(l - k.l) > 0.01) {
       k.l = l;
@@ -129,13 +148,54 @@ function lightFrame(nowMs) {
       k.h = hue;
       k.el.style.setProperty("--h", hue.toFixed(1));
     }
+    // promedio circular del tono, ponderado por la luz de cada tecla
+    const rad = (hue * Math.PI) / 180;
+    sumaLuz += l; sumaX += Math.cos(rad) * l; sumaY += Math.sin(rad) * l;
   }
+
+  // la tira frontal, el reflejo y la perilla usan el color promedio
+  const promedio = sumaLuz / keys.length;
+  const tonoPromedio = sumaLuz > 0.01 ? ((Math.atan2(sumaY, sumaX) * 180) / Math.PI + 360) % 360 : state.hue;
+  boardWrap.style.setProperty("--glow-l", promedio.toFixed(3));
+  boardWrap.style.setProperty("--glow-h", tonoPromedio.toFixed(1));
+
+  // inclinación suavizada (interpolación hacia el objetivo)
+  inclinacion.rx += (inclinacion.objetivoX - inclinacion.rx) * 0.08;
+  inclinacion.ry += (inclinacion.objetivoY - inclinacion.ry) * 0.08;
+  board.style.setProperty("--rx", inclinacion.rx.toFixed(2) + "deg");
+  board.style.setProperty("--ry", inclinacion.ry.toFixed(2) + "deg");
+
+  actualizarPpm(t);
   requestAnimationFrame(lightFrame);
 }
 requestAnimationFrame(lightFrame);
 
 // Entrada: una onda barre el teclado de izquierda a derecha al cargar
 setTimeout(() => addRipple(-1.5, 3, { speed: 14, width: 1.6, life: 1.6, amp: 0.95 }), 650);
+
+// Mouse sobre el hero → mueve la linterna y la inclinación
+const conMouse = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+if (conMouse && !reduceMotion) {
+  const heroEl = document.getElementById("inicio");
+  heroEl.addEventListener("pointermove", (e) => {
+    const rect = board.getBoundingClientRect();
+    const u = rect.width / 16.72;                 // ancho del teclado = 16u + bordes
+    linterna.x = (e.clientX - rect.left) / u - 0.36;
+    linterna.y = (e.clientY - rect.top) / u - 0.36;
+    const dentro = linterna.x > -1.5 && linterna.x < 17.5 && linterna.y > -1.5 && linterna.y < 7.5;
+    linterna.objetivo = dentro ? 1 : 0;
+
+    // inclinación: máximo ±7° según dónde está el mouse respecto al centro
+    const nx = clamp((e.clientX - (rect.left + rect.width / 2)) / (window.innerWidth / 2), -1, 1);
+    const ny = clamp((e.clientY - (rect.top + rect.height / 2)) / (window.innerHeight / 2), -1, 1);
+    inclinacion.objetivoY = nx * 7;
+    inclinacion.objetivoX = -ny * 5;
+  });
+  heroEl.addEventListener("pointerleave", () => {
+    linterna.objetivo = 0;
+    inclinacion.objetivoX = 0; inclinacion.objetivoY = 0;
+  });
+}
 
 /* ---------------------------------------------------------
    3. Sonido sintetizado (Web Audio, sin archivos)
@@ -203,7 +263,23 @@ function playClick(kind = state.switchType, pitch = 1) {
    4. Pulsar / soltar teclas (teclado físico, mouse y touch)
    --------------------------------------------------------- */
 const screenText = document.getElementById("screen-text");
+const screenPpm = document.getElementById("screen-ppm");
 let typed = "";
+
+// Palabras por minuto: caracteres de los últimos 10 s / 5 (palabra promedio) × 6
+const pulsaciones = [];
+let ultimoPpm = -1, proximoPpm = 0;
+function actualizarPpm(t) {
+  if (t < proximoPpm) return;           // se recalcula 4 veces por segundo
+  proximoPpm = t + 0.25;
+  while (pulsaciones.length && t - pulsaciones[0] > 10) pulsaciones.shift();
+  const ppm = Math.round((pulsaciones.length / 5) * 6);
+  if (ppm !== ultimoPpm) {
+    ultimoPpm = ppm;
+    screenPpm.firstChild.textContent = ppm;
+    screenPpm.classList.toggle("is-on", ppm > 0);
+  }
+}
 
 function renderTyped() {
   const max = window.innerWidth < 500 ? 22 : 34;
@@ -222,7 +298,7 @@ function press(code, key) {
   const char = key && key.length === 1 ? key : k.char;
   if (code === "Backspace") typed = typed.slice(0, -1);
   else if (code === "Enter" || code === "Escape") typed = "";
-  else if (char) typed += char;
+  else if (char) { typed += char; pulsaciones.push(performance.now() / 1000); }
   renderTyped();
 }
 
@@ -406,9 +482,6 @@ const video = document.getElementById("video-fondo");
 const barraProgreso = document.getElementById("scroll-progress-bar");
 const sun = document.getElementById("sun");
 const sunGlow = document.querySelector(".scene__sun-glow");
-const inside = document.getElementById("por-dentro");
-const explode = document.getElementById("explode");
-const layerItems = document.querySelectorAll("#layers-list li");
 
 // Alinea el sol con la línea del horizonte del video (está al 54,8% de su alto).
 // Con object-fit: cover el video se escala y recorta, así que se calcula a mano.
@@ -426,13 +499,6 @@ video.addEventListener("loadedmetadata", calcularHorizonte);
 window.addEventListener("resize", calcularHorizonte);
 if (reduceMotion) video.pause();
 
-// rejillas de las capas (keycaps y switches)
-for (const id of ["caps-grid", "switch-grid"]) {
-  const grid = document.getElementById(id);
-  grid.innerHTML = "<span></span>".repeat(96);
-}
-
-const easeInOut = (p) => (p < 0.5 ? 2 * p * p : 1 - (-2 * p + 2) ** 2 / 2);
 let ticking = false;
 
 function onScroll() {
@@ -451,12 +517,6 @@ function onScroll() {
   sunGlow.style.setProperty("--sun-y", hp * 140 + "px");
   board.style.setProperty("--tilt", hp * 32 + "deg");
 
-  // Por dentro: las capas se separan según el avance del scroll
-  const rect = inside.getBoundingClientRect();
-  const progress = clamp(-rect.top / (rect.height - window.innerHeight));
-  explode.style.setProperty("--p", easeInOut(clamp((progress - 0.05) / 0.7)).toFixed(4));
-  layerItems.forEach((li, i) => li.classList.toggle("is-on", progress > 0.08 + i * 0.17));
-
   ticking = false;
 }
 window.addEventListener("scroll", () => {
@@ -465,20 +525,7 @@ window.addEventListener("scroll", () => {
 onScroll();
 
 /* ---------------------------------------------------------
-   9. Reserva (demo)
-   --------------------------------------------------------- */
-const reserveBtn = document.getElementById("reserve");
-const reserveNote = document.getElementById("reserve-note");
-reserveBtn.addEventListener("click", () => {
-  reserveBtn.textContent = "Reservado";
-  reserveBtn.disabled = true;
-  reserveNote.textContent = "Listo, quedaste en la lista. Te escribiremos cuando salga la primera tanda.";
-  reserveNote.classList.add("is-ok");
-  playClick("tactile", 1.2);
-});
-
-/* ---------------------------------------------------------
-   10. Menú en celulares
+   9. Menú en celulares
    --------------------------------------------------------- */
 const navToggle = document.getElementById("nav-toggle");
 const menu = document.getElementById("menu-principal");
@@ -493,24 +540,3 @@ navToggle.addEventListener("click", () => {
   navToggle.setAttribute("aria-label", abierto ? "Cerrar menú" : "Abrir menú");
 });
 menu.querySelectorAll("a").forEach((a) => a.addEventListener("click", cerrarMenu));
-
-/* ---------------------------------------------------------
-   11. GSAP (librería de apoyo): entrada de specs y conteo del precio
-   Si el CDN no carga, la página funciona igual sin estas animaciones.
-   --------------------------------------------------------- */
-if (window.gsap && window.ScrollTrigger && !reduceMotion) {
-  gsap.registerPlugin(ScrollTrigger);
-
-  gsap.from(".specs__list > div", {
-    opacity: 0, y: 24, duration: 0.6, ease: "power2.out", stagger: 0.08,
-    scrollTrigger: { trigger: ".specs__list", start: "top 85%" },
-  });
-
-  const precio = document.getElementById("precio");
-  const contador = { valor: 0 };
-  gsap.to(contador, {
-    valor: Number(precio.dataset.precio), duration: 1.6, ease: "power3.out",
-    scrollTrigger: { trigger: ".cta", start: "top 75%" },
-    onUpdate: () => { precio.textContent = "$" + Math.round(contador.valor).toLocaleString("es-CL"); },
-  });
-}
