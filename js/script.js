@@ -645,3 +645,65 @@ function confirmarReserva(event) {
   event.preventDefault();
   alert('¡Reserva completada! Tu orden de KEYWAVE 75 ha sido registrada con éxito.');
 }
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  const elementsToReveal = document.querySelectorAll(".text-cyber-reveal");
+
+  const revealObserver = new IntersectionObserver(
+    (entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          // Asigna un retardo procedimental (stagger) según el índice de cada tarjeta
+          const cards = Array.from(document.querySelectorAll(".specs-grid .spec-card"));
+          const index = cards.indexOf(entry.target);
+          
+          const delay = index >= 0 ? index * 120 : 0; // 120ms de diferencia entre cada dato
+
+          setTimeout(() => {
+            entry.target.classList.add("is-visible");
+          }, delay);
+
+          observer.unobserve(entry.target); // Se ejecuta una sola vez al aparecer
+        }
+      });
+    },
+    { threshold: 0.15 }
+  );
+
+  elementsToReveal.forEach((el) => revealObserver.observe(el));
+});
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  const elementsToReveal = document.querySelectorAll(".text-cyber-reveal");
+
+  const revealObserver = new IntersectionObserver(
+    (entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const target = entry.target;
+          
+          // Detectar si pertenece a la sección de reserva o specs para aplicar orden en cascada
+          const container = target.closest(".reservar-card") || target.closest(".specs-container");
+          let delay = 0;
+
+          if (container) {
+            const siblings = Array.from(container.querySelectorAll(".text-cyber-reveal"));
+            const index = siblings.indexOf(target);
+            delay = index >= 0 ? index * 120 : 0; // 120ms de diferencia por elemento
+          }
+
+          setTimeout(() => {
+            target.classList.add("is-visible");
+          }, delay);
+
+          observer.unobserve(target); // Se ejecuta una sola vez al aparecer
+        }
+      });
+    },
+    { threshold: 0.15 }
+  );
+
+  elementsToReveal.forEach((el) => revealObserver.observe(el));
+});
