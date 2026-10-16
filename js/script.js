@@ -171,7 +171,7 @@ function lightFrame(nowMs) {
 requestAnimationFrame(lightFrame);
 
 // Entrada: una onda barre el teclado de izquierda a derecha al cargar
-setTimeout(() => addRipple(-1.5, 3, { speed: 14, width: 1.6, life: 1.6, amp: 0.95 }), 650);
+if (!reduceMotion) setTimeout(() => addRipple(-1.5, 3, { speed: 14, width: 1.6, life: 1.6, amp: 0.95 }), 650);
 
 // Mouse sobre el hero → mueve la linterna y la inclinación
 const conMouse = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
@@ -288,14 +288,21 @@ function renderTyped() {
 
 function press(code, key) {
   const k = keyByCode.get(CODE_ALIAS[code] || code);
-  if (!k) return;
-  if (!k.down) playClick(state.switchType, code === "Space" ? 0.8 : 1);
-  k.down = true;
-  k.el.classList.add("is-down");
-  addRipple(k.x, k.y);
+  const esCaracter = key && [...key].length === 1;
+  if (k) {
+    if (!k.down) playClick(state.switchType, code === "Space" ? 0.8 : 1);
+    k.down = true;
+    k.el.classList.add("is-down");
+    addRipple(k.x, k.y);
+  } else if (esCaracter) {
+    playClick(state.switchType);              // carácter sin tecla propia: onda desde el centro
+    addRipple(8, 3.2);
+  } else {
+    return;
+  }
 
   // pantalla
-  const char = key && key.length === 1 ? key : k.char;
+  const char = esCaracter ? key : k.char;
   if (code === "Backspace") typed = typed.slice(0, -1);
   else if (code === "Enter" || code === "Escape") typed = "";
   else if (char) { typed += char; pulsaciones.push(performance.now() / 1000); }
@@ -316,10 +323,16 @@ new IntersectionObserver(([e]) => { heroVisible = e.isIntersecting; }, { thresho
 
 const BLOCK_DEFAULT = new Set(["Space", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Backspace", "PageUp", "PageDown", "Home", "End", "Slash", "Quote"]);
 
+const entrada = document.getElementById("entrada");
+let ultimaTeclaFisica = 0;
+
 window.addEventListener("keydown", (e) => {
   if (e.ctrlKey || e.metaKey) return;
   const tag = document.activeElement && document.activeElement.tagName;
-  if (tag === "INPUT" || tag === "TEXTAREA") return;
+  if ((tag === "INPUT" || tag === "TEXTAREA") && document.activeElement !== entrada) return;
+  if (e.key === "Unidentified" || e.keyCode === 229) return; // teclado virtual: lo maneja "input"
+  if (document.activeElement.closest && document.activeElement.closest("#modos") && e.code.startsWith("Arrow")) return;
+  ultimaTeclaFisica = performance.now();
   if (heroVisible && BLOCK_DEFAULT.has(e.code)) e.preventDefault();
   if (e.repeat) {
     const k = keyByCode.get(CODE_ALIAS[e.code] || e.code);
@@ -330,6 +343,33 @@ window.addEventListener("keydown", (e) => {
 });
 window.addEventListener("keyup", (e) => release(e.code));
 window.addEventListener("blur", () => keys.forEach((k) => release(k.code)));
+
+// Teclado del teléfono: tocar la pantalla enfoca un input invisible.
+// Cada carácter que llega ilumina su tecla (o la más parecida).
+const codigoPorCaracter = new Map();
+for (const k of keys) if (k.char) codigoPorCaracter.set(k.char, k.code);
+function codigoDe(c) {
+  const base = c.toLowerCase().normalize("NFD")[0];       // "Á" → "a"
+  return codigoPorCaracter.get(c.toLowerCase()) || codigoPorCaracter.get(base);
+}
+function tocar(code, char) {
+  press(code, char);
+  setTimeout(() => release(code), 110);
+}
+entrada.addEventListener("input", (e) => {
+  const texto = e.data ?? entrada.value;
+  entrada.value = "";
+  if (performance.now() - ultimaTeclaFisica < 80) return; // ya lo procesó keydown
+  if (e.inputType && e.inputType.startsWith("delete")) { tocar("Backspace"); return; }
+  for (const c of texto || "") tocar(codigoDe(c), c);
+});
+entrada.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") entrada.blur();                   // "listo" cierra el teclado del teléfono
+});
+
+// Texto de ayuda según cómo se usa la página
+const pantallaTactil = window.matchMedia("(hover: none) and (pointer: coarse)").matches;
+screenText.dataset.placeholder = pantallaTactil ? "Toca aquí para escribir" : "Escribe o toca una tecla…";
 
 // Mouse / touch (multitáctil: cada dedo tiene su propia tecla)
 const pointerKeys = new Map();
@@ -352,19 +392,31 @@ window.addEventListener("pointerup", endPointer);
    --------------------------------------------------------- */
 const MODES = ["reactivo", "ola", "respira", "estatico"];
 const modeButtons = document.querySelectorAll(".mode");
+const segmentado = document.getElementById("modos");
 let knobAngle = 0;
 
 function setMode(mode) {
   state.mode = mode;
+  segmentado.style.setProperty("--i", MODES.indexOf(mode));   // mueve el indicador
   modeButtons.forEach((b) => {
     const on = b.dataset.mode === mode;
     b.classList.toggle("is-active", on);
     b.setAttribute("aria-checked", on);
+    b.tabIndex = on ? 0 : -1;                                // un solo Tab entra al grupo
   });
   // destello de confirmación desde la perilla
   addRipple(15.5, 0.5, { speed: 18, width: 1.8, life: 1.3, amp: 0.8 });
 }
 modeButtons.forEach((b) => b.addEventListener("click", () => setMode(b.dataset.mode)));
+// Flechas izquierda/derecha cambian de modo, como un grupo de radio nativo
+segmentado.addEventListener("keydown", (e) => {
+  if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+  e.preventDefault();
+  const paso = e.key === "ArrowRight" ? 1 : -1;
+  const siguiente = MODES[(MODES.indexOf(state.mode) + paso + MODES.length) % MODES.length];
+  setMode(siguiente);
+  segmentado.querySelector(`[data-mode="${siguiente}"]`).focus();
+});
 
 knobEl.addEventListener("click", () => {
   knobAngle += 60;
@@ -460,8 +512,20 @@ function drawSky(nowMs) {
     if (age > 0.9) shooting = null;
   }
   ctx2d.globalAlpha = 1;
-  if (!reduceMotion && skyVisible) requestAnimationFrame(drawSky);
+  if (!reduceMotion && skyVisible && !fondoPausado) requestAnimationFrame(drawSky);
 }
+
+const pausaFondo = document.getElementById("pausa-fondo");
+let fondoPausado = false;
+function pausarFondo(pausar) {
+  fondoPausado = pausar;
+  pausaFondo.setAttribute("aria-pressed", pausar);
+  pausaFondo.setAttribute("aria-label", pausar ? "Reanudar el fondo animado" : "Pausar el fondo animado");
+  const video = document.getElementById("video-fondo");
+  if (pausar) video.pause(); else video.play().catch(() => {});
+  if (!pausar) requestAnimationFrame(drawSky);
+}
+pausaFondo.addEventListener("click", () => pausarFondo(!fondoPausado));
 
 sizeSky();
 requestAnimationFrame(drawSky);
@@ -469,7 +533,7 @@ window.addEventListener("resize", () => { sizeSky(); renderTyped(); if (reduceMo
 new IntersectionObserver(([e]) => {
   const was = skyVisible;
   skyVisible = e.isIntersecting;
-  if (skyVisible && !was && !reduceMotion) requestAnimationFrame(drawSky);
+  if (skyVisible && !was && !reduceMotion && !fondoPausado) requestAnimationFrame(drawSky);
 }).observe(canvas);
 
 /* ---------------------------------------------------------
@@ -482,6 +546,7 @@ const video = document.getElementById("video-fondo");
 const barraProgreso = document.getElementById("scroll-progress-bar");
 const sun = document.getElementById("sun");
 const sunGlow = document.querySelector(".scene__sun-glow");
+const tituloHero = document.querySelector(".hero__title");
 
 // Alinea el sol con la línea del horizonte del video (está al 54,8% de su alto).
 // Con object-fit: cover el video se escala y recorta, así que se calcula a mano.
@@ -493,17 +558,28 @@ function calcularHorizonte() {
   const altoVideo = vh * escala;
   const horizonte = (h - altoVideo) / 2 + altoVideo * HORIZONTE_VIDEO;
   scene.style.setProperty("--horizon", horizonte + "px");
+
+  // El sol nunca queda detrás del texto: su borde superior va al menos 24 px bajo el párrafo.
+  // (offsetTop ignora el transform de la animación de entrada, así la medida es estable)
+  const lead = document.querySelector(".hero__lead");
+  const leadAbajo = lead.offsetTop + lead.offsetHeight;
+  const movil = window.innerWidth <= 860;
+  const maximo = Math.min(window.innerWidth * (movil ? 0.58 : 0.6), movil ? 340 : 480);
+  const espacio = 2 * (horizonte - leadAbajo - 24);
+  scene.style.setProperty("--sun-size", Math.max(160, Math.min(maximo, espacio)) + "px");
 }
+document.fonts.ready.then(calcularHorizonte);   // la fuente del título cambia la altura del texto
 calcularHorizonte();
 video.addEventListener("loadedmetadata", calcularHorizonte);
 window.addEventListener("resize", calcularHorizonte);
-if (reduceMotion) video.pause();
+if (reduceMotion) pausarFondo(true);   // con "reducir movimiento" el fondo parte quieto
 
 let ticking = false;
 
 function onScroll() {
   const y = window.scrollY;
   nav.classList.toggle("is-scrolled", y > 40);
+  nav.classList.toggle("con-logo", tituloHero.getBoundingClientRect().bottom < 60);
 
   // Barra de progreso: porcentaje recorrido de la página
   const alturaTotal = document.documentElement.scrollHeight - document.documentElement.clientHeight;

@@ -48,27 +48,37 @@
         <h1 class="hero__title">KEYWAVE<span>75</span></h1>
         <p class="hero__lead">Teclado mecánico 75% con luz que responde a cada tecla que tocas.</p>
 
-        <output class="screen" id="screen" aria-live="off">
-          <span class="screen__text" id="screen-text"></span><span class="screen__caret"></span>
-          <span class="screen__ppm" id="screen-ppm"><b>0</b> ppm</span>
-        </output>
+        <!-- Pantalla: al tocarla se enfoca un input invisible (en el celular abre el teclado del teléfono) -->
+        <label class="screen" id="screen" for="entrada">
+          <input class="screen__input" id="entrada" type="text" autocomplete="off" autocorrect="off"
+                 autocapitalize="off" spellcheck="false" enterkeyhint="done" aria-label="Escribe para iluminar el teclado">
+          <span class="screen__text" id="screen-text" aria-hidden="true" data-placeholder="Escribe o toca una tecla…"></span><span class="screen__caret" aria-hidden="true"></span>
+          <span class="screen__ppm" id="screen-ppm" aria-hidden="true"><b>0</b> ppm</span>
+        </label>
 
         <div class="board-wrap" id="board-wrap">
           <div class="board" id="teclado-interactivo" role="img" aria-label="Teclado KEYWAVE 75 interactivo. Escribe con tu teclado o toca las teclas para iluminarlas."></div>
         </div>
 
-        <div class="modes" role="radiogroup" aria-label="Modo de luz">
-          <button class="mode is-active" role="radio" aria-checked="true" data-mode="reactivo">Reactivo</button>
-          <button class="mode" role="radio" aria-checked="false" data-mode="ola">Ola</button>
-          <button class="mode" role="radio" aria-checked="false" data-mode="respira">Respiración</button>
-          <button class="mode" role="radio" aria-checked="false" data-mode="estatico">Estático</button>
-          <button class="sound" id="sound" aria-pressed="true" title="Sonido de teclas">
+        <div class="hero__controls">
+          <div class="segmented" id="modos" role="radiogroup" aria-label="Modo de luz">
+            <span class="segmented__thumb" aria-hidden="true"></span>
+            <button class="mode is-active" role="radio" aria-checked="true" tabindex="0" data-mode="reactivo">Reactivo</button>
+            <button class="mode" role="radio" aria-checked="false" tabindex="-1" data-mode="ola">Ola</button>
+            <button class="mode" role="radio" aria-checked="false" tabindex="-1" data-mode="respira">Pulso</button>
+            <button class="mode" role="radio" aria-checked="false" tabindex="-1" data-mode="estatico">Fijo</button>
+          </div>
+          <button class="icon-btn" id="sound" aria-pressed="true" aria-label="Sonido de las teclas">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z"/><path class="sound__waves" d="M16 9a4 4 0 0 1 0 6M18.5 6.5a7.5 7.5 0 0 1 0 11"/></svg>
-            <span class="sr-only">Sonido</span>
           </button>
         </div>
-        <p class="hero__hint">Escribe con tu teclado, toca las teclas o gira la perilla.</p>
       </div>
+
+      <!-- Pausa del fondo animado (video + estrellas) -->
+      <button class="icon-btn hero__pausa" id="pausa-fondo" aria-pressed="false" aria-label="Pausar el fondo animado">
+        <svg class="icono-pausa" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg>
+        <svg class="icono-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5l12 7-12 7z"/></svg>
+      </button>
     </section>
 
     <!-- POR DENTRO · pendiente (ver TAREAS.md) -->

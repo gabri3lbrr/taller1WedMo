@@ -46,7 +46,12 @@ r(t) = v · (t − t0)
 luz  = A · e^(−(d − r)² / w²) · (1 − edad/vida)
 ```
 
-Sobre eso se suman el modo de luz elegido (Ola, Respiración, Estático) y la "linterna" del cursor. El color promedio de todas las teclas alimenta la tira de luz frontal, el reflejo bajo el teclado y la perilla.
+Sobre eso se suman el modo de luz elegido (Ola, Pulso, Fijo) y la "linterna" del cursor. El color promedio de todas las teclas alimenta la tira de luz frontal, el reflejo bajo el teclado y la perilla.
+
+## Diseño
+
+El hero se revisó con las Human Interface Guidelines de Apple (accesibilidad, contraste, tamaños táctiles,
+movimiento). El detalle, con citas y medidas, está en [docs/revision-diseno-hero.md](docs/revision-diseno-hero.md).
 
 ## Estructura
 
