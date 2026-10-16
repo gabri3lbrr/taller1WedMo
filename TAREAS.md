@@ -11,8 +11,11 @@ Los nombres son una propuesta: si quieren cambiar de sección, se cambia acá.
 | Especificaciones + Reserva | Seba | ⬜ Por hacer |
 
 Todo va en `index.html`, `css/style.css` y `js/script.js` (el enunciado pide archivos separados).
-Usen la paleta que ya está en `:root` del CSS (`--magenta`, `--cyan`, `--muted`, `--accent-h`, etc.)
-y la tipografía Chakra Petch para que todo se vea como una sola página.
+
+**Estilo para que todo se vea como una sola página:**
+- Colores: los de `:root` en el CSS (`--magenta`, `--cyan`, `--muted`, `--accent-h`).
+- Fuentes: `var(--display)` para títulos, `var(--ui)` para botones y etiquetas, `var(--body)` para texto.
+- Esquinas rectas (`border-radius: 0`) y bordes de 2 px. Nada redondeado.
 
 ---
 
@@ -22,7 +25,7 @@ Terminado. Cubre los requisitos 2, 3, 5, 6 y 7:
 
 - Fondo: video synthwave con desenfoque, estrellas en canvas y sol detrás del video.
 - Teclado 75% con **motor de luz por ondas** (la animación propia del equipo, 15% de la nota).
-- Keycaps esculpidos, 4 modos de luz, perilla, inclinación 3D y "linterna" con el mouse.
+- Teclado negro RGB de frente, 4 modos de luz, perilla, inclinación 3D y "linterna" con el mouse.
 - Pantalla con lo que escribes y palabras por minuto. Sonido sintetizado por switch.
 - Responsive y táctil.
 
