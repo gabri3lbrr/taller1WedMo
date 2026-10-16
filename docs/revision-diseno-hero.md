@@ -67,8 +67,10 @@ elemento no se podía usar cómodamente, y en un texto ilegible sobre el sol.
 - El motor de luz por ondas como único elemento protagonista; todo lo demás está en segundo plano.
 - La luz como feedback inmediato y breve de cada tecla (`motion.md › Providing feedback`:
   "Aim for brevity and precision in feedback animations").
-- Dos familias tipográficas: Monoton solo para la marca y Chakra Petch para todo lo demás
-  (`typography.md`: "Minimize the number of typefaces you use").
+- Tipografía pixel con un rol claro para cada fuente: Press Start 2P para títulos, Silkscreen
+  (solo mayúsculas) para botones y etiquetas, y VT323 para el texto corrido, que necesita leerse
+  (`typography.md`: "Minimize the number of typefaces you use"). VT323 es chica para su tamaño, así
+  que el texto base sube a 1,4rem.
 - Un color de acento con un solo significado: el switch elegido (`color.md`:
   "Avoid using the same color to mean different things").
 

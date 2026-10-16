@@ -59,6 +59,9 @@ delante del sol. En el celular queda en una columna. Las capturas de las 4 está
 Para el teclado se compararon 4 estilos (Cristal, Negro RGB, Blanco perla, Retro 80s) y 3 ángulos;
 se eligió **Negro RGB, de frente**: teclas negro mate con leyendas que brillan del color de la luz.
 Comparación en [docs/propuestas/teclado/](docs/propuestas/teclado/).
+Para la tipografía se probaron 4 combinaciones y se eligió **pixel arcade**: Press Start 2P (títulos),
+Silkscreen (botones y etiquetas) y VT323 (texto), con selectores de esquinas rectas.
+Ejemplos en [docs/propuestas/fuentes/](docs/propuestas/fuentes/).
 
 ## Estructura
 
