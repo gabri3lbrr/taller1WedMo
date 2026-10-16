@@ -56,6 +56,9 @@ movimiento). El detalle, con citas y medidas, está en [docs/revision-diseno-her
 Se probaron 4 direcciones para el hero (Vitrina, Arcade 80s, Editorial y Vaporwave pastel) y se eligió
 **Editorial**: en pantallas anchas, el texto va a la izquierda y el teclado flota en isométrico a la derecha,
 delante del sol. En el celular queda en una columna. Las capturas de las 4 están en [docs/propuestas/](docs/propuestas/).
+Para el teclado se compararon 4 estilos (Cristal, Negro RGB, Blanco perla, Retro 80s) y 3 ángulos;
+se eligió **Negro RGB, de frente**: teclas negro mate con leyendas que brillan del color de la luz.
+Comparación en [docs/propuestas/teclado/](docs/propuestas/teclado/).
 
 ## Estructura
 
