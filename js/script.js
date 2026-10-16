@@ -178,12 +178,15 @@ const conMouse = window.matchMedia("(hover: hover) and (pointer: fine)").matches
 if (conMouse && !reduceMotion) {
   const heroEl = document.getElementById("inicio");
   heroEl.addEventListener("pointermove", (e) => {
+    // la linterna se centra en la tecla bajo el cursor (funciona aunque el teclado esté rotado)
+    const bajoCursor = document.elementFromPoint(e.clientX, e.clientY);
+    const teclaEl = bajoCursor && bajoCursor.closest(".key");
+    if (teclaEl) {
+      const k = keyByCode.get(teclaEl.dataset.code);
+      linterna.x = k.x; linterna.y = k.y;
+    }
+    linterna.objetivo = teclaEl ? 1 : 0;
     const rect = board.getBoundingClientRect();
-    const u = rect.width / 16.72;                 // ancho del teclado = 16u + bordes
-    linterna.x = (e.clientX - rect.left) / u - 0.36;
-    linterna.y = (e.clientY - rect.top) / u - 0.36;
-    const dentro = linterna.x > -1.5 && linterna.x < 17.5 && linterna.y > -1.5 && linterna.y < 7.5;
-    linterna.objetivo = dentro ? 1 : 0;
 
     // inclinación: máximo ±7° según dónde está el mouse respecto al centro
     const nx = clamp((e.clientX - (rect.left + rect.width / 2)) / (window.innerWidth / 2), -1, 1);
@@ -565,7 +568,10 @@ function calcularHorizonte() {
   const leadAbajo = lead.offsetTop + lead.offsetHeight;
   const movil = window.innerWidth <= 860;
   const maximo = Math.min(window.innerWidth * (movil ? 0.58 : 0.6), movil ? 340 : 480);
-  const espacio = 2 * (horizonte - leadAbajo - 24);
+  // solo se limita si el párrafo está realmente encima del sol (en dos columnas no lo está)
+  const centroSol = sun.offsetLeft;
+  const encima = lead.offsetLeft < centroSol + maximo / 2 && lead.offsetLeft + lead.offsetWidth > centroSol - maximo / 2;
+  const espacio = encima ? 2 * (horizonte - leadAbajo - 24) : maximo;
   scene.style.setProperty("--sun-size", Math.max(160, Math.min(maximo, espacio)) + "px");
 }
 document.fonts.ready.then(calcularHorizonte);   // la fuente del título cambia la altura del texto

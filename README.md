@@ -53,6 +53,10 @@ Sobre eso se suman el modo de luz elegido (Ola, Pulso, Fijo) y la "linterna" del
 El hero se revisó con las Human Interface Guidelines de Apple (accesibilidad, contraste, tamaños táctiles,
 movimiento). El detalle, con citas y medidas, está en [docs/revision-diseno-hero.md](docs/revision-diseno-hero.md).
 
+Se probaron 4 direcciones para el hero (Vitrina, Arcade 80s, Editorial y Vaporwave pastel) y se eligió
+**Editorial**: en pantallas anchas, el texto va a la izquierda y el teclado flota en isométrico a la derecha,
+delante del sol. En el celular queda en una columna. Las capturas de las 4 están en [docs/propuestas/](docs/propuestas/).
+
 ## Estructura
 
 ```

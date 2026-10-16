@@ -598,6 +598,46 @@ a { color: inherit; }
 }
 
 /* =========================================================
+   HERO EN DOS COLUMNAS (pantallas anchas)
+   Texto y controles a la izquierda, teclado en isométrico a la
+   derecha delante del sol. En pantallas angostas queda en una columna.
+   ========================================================= */
+@media (min-width: 1000px) {
+  .hero { place-items: center; padding: 6rem clamp(2rem, 5vw, 5rem) 4rem; }
+
+  .hero__content {
+    --u: clamp(22px, 2.5vw, 44px);
+    display: grid;
+    grid-template-columns: minmax(0, .9fr) minmax(0, 1.25fr);
+    grid-template-areas:
+      "titulo    teclado"
+      "lead      teclado"
+      "pantalla  teclado"
+      "controles teclado";
+    align-content: center;
+    column-gap: clamp(1rem, 3vw, 3rem);
+    max-width: 1400px;
+    text-align: left;
+  }
+  .hero__title    { grid-area: titulo; align-self: end; justify-content: flex-start; white-space: nowrap; font-size: clamp(2.6rem, 4.2vw, 5.2rem); }
+  .hero__lead     { grid-area: lead; max-width: 26ch; text-shadow: none; color: #d9ccf5; }
+  .screen         { grid-area: pantalla; justify-self: start; justify-content: flex-start; width: 100%; min-width: 0; max-width: 28rem; padding: .5rem 1.2rem; }
+  .screen__ppm    { display: none; }
+  .board-wrap     { grid-area: teclado; align-self: center; justify-self: center; perspective: none; }
+  .hero__controls { grid-area: controles; justify-content: flex-start; width: min(100%, 28rem); margin-top: 1.2rem; }
+
+  /* teclado en isométrico, como una pieza flotando sobre la grilla */
+  .board {
+    transform: rotateX(calc(48deg + var(--tilt) * .3)) rotateZ(-24deg) rotateY(var(--ry));
+    transform-origin: 50% 50%;
+  }
+  .board-wrap::after { bottom: calc(var(--u) * -.4); left: 10%; right: 10%; height: calc(var(--u) * 3); }
+
+  /* el sol queda detrás del teclado, en la columna derecha */
+  .scene__sun, .scene__sun-glow { left: 64%; }
+}
+
+/* =========================================================
    RESPONSIVE
    ========================================================= */
 @media (max-width: 860px) {
