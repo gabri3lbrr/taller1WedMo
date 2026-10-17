@@ -13,12 +13,10 @@
 </head>
 <body>
 
-  <!-- Barra de progreso del scroll -->
   <div id="scroll-progress-container" aria-hidden="true">
     <div id="scroll-progress-bar"></div>
   </div>
 
-  <!-- Barra de navegación -->
   <header class="nav" id="nav">
     <a class="nav__logo" href="#inicio" aria-label="KEYWAVE, inicio">KEYWAVE</a>
     <button class="nav__toggle" id="nav-toggle" aria-expanded="false" aria-controls="menu-principal" aria-label="Abrir menú">
@@ -33,7 +31,6 @@
   </header>
 
   <main>
-    <!-- HERO: video synthwave + cielo animado + teclado interactivo -->
     <section class="hero" id="inicio">
       <div class="scene" id="scene" aria-hidden="true">
         <canvas class="scene__stars" id="stars"></canvas>
@@ -48,7 +45,6 @@
         <h1 class="hero__title">KEYWAVE<span>75</span></h1>
         <p class="hero__lead">Teclado mecánico 75%. Ultrafino, ultraequipado.</p>
 
-        <!-- Pantalla: al tocarla se enfoca un input invisible (en el celular abre el teclado del teléfono) -->
         <label class="screen" id="screen" for="entrada">
           <input class="screen__input" id="entrada" type="text" autocomplete="off" autocorrect="off"
                  autocapitalize="off" spellcheck="false" enterkeyhint="done" aria-label="Escribe para iluminar el teclado">
@@ -74,31 +70,102 @@
         </div>
       </div>
 
-      <!-- Pausa del fondo animado (video + estrellas) -->
       <button class="icon-btn hero__pausa" id="pausa-fondo" aria-pressed="false" aria-label="Pausar el fondo animado">
         <svg class="icono-pausa" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg>
         <svg class="icono-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5l12 7-12 7z"/></svg>
       </button>
     </section>
 
-    <!-- POR DENTRO · pendiente (ver TAREAS.md) -->
-    <section class="pendiente" id="por-dentro">
-      <h2>Por dentro</h2>
-      <p>Sección en construcción.</p>
-    </section>
+    <section id="por-dentro" class="inside-section" aria-labelledby="inside-title">
+            <div class="inside-container">
+                <div class="inside-heading">
+                    <h2 id="inside-title">Por dentro</h2>
+                </div>
 
-    <!-- SWITCHES: cambian el color de la luz y el sonido del teclado -->
+                <div class="inside-layout">
+                    <div class="inside-viewer">
+                        <div class="inside-stage">
+                            <svg id="inside-keyboard" viewBox="0 0 660 660" role="img" aria-labelledby="inside-svg-title inside-svg-description">
+                                <title id="inside-svg-title">Interior del teclado KEYWAVE 75</title>
+                                <desc id="inside-svg-description">Keycaps de PBT, switches hot-swap, placa de aluminio, PCB, espuma PORON, carcasa de aluminio y perilla metálica.</desc>
+                            </svg>
+                        </div>
+                        <div class="inside-viewer-footer">
+                            <div class="inside-view-actions">
+                                <button id="inside-focus" class="inside-outline-button" type="button" aria-pressed="false" aria-controls="inside-keyboard">Ampliar pieza <span aria-hidden="true">↗</span></button>
+                                <button id="inside-assembly" class="inside-outline-button" type="button" aria-pressed="false" aria-controls="inside-keyboard">Ensamblar <span aria-hidden="true">↓</span></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="inside-controls">
+                        <div class="inside-components">
+                            <p class="inside-panel-label">Composición</p>
+                            <div class="inside-layer-list" role="group" aria-label="Componentes del teclado">
+                                <button type="button" class="inside-layer-button" data-layer="keycaps" aria-pressed="false"><span>01</span> Keycaps <span class="inside-layer-material">PBT</span></button>
+                                <button type="button" class="inside-layer-button is-active" data-layer="switches" aria-pressed="true"><span>02</span> Switches <span class="inside-layer-material">HOT-SWAP</span></button>
+                                <button type="button" class="inside-layer-button" data-layer="plate" aria-pressed="false"><span>03</span> Placa <span class="inside-layer-material">ALUMINIO</span></button>
+                                <button type="button" class="inside-layer-button" data-layer="pcb" aria-pressed="false"><span>04</span> Circuito PCB <span class="inside-layer-material">RGB</span></button>
+                                <button type="button" class="inside-layer-button" data-layer="foam" aria-pressed="false"><span>05</span> Espuma acústica <span class="inside-layer-material">PORON</span></button>
+                                <button type="button" class="inside-layer-button" data-layer="case" aria-pressed="false"><span>06</span> Carcasa <span class="inside-layer-material">ALUMINIO</span></button>
+                            </div>
+                            <div class="inside-layer-detail" aria-live="polite" aria-atomic="true">
+                                <h3 id="inside-layer-title">Switches</h3>
+                                <p id="inside-layer-description">Montaje hot-swap: switches intercambiables sin soldar.</p>
+                            </div>
+                        </div>
+
+                        <div class="inside-switch-panel">
+                            <p class="inside-panel-label">Switches</p>
+                            <div class="inside-switch-options" role="group" aria-label="Tipo de switch">
+                                <button type="button" class="inside-switch-option is-active" data-switch="tactile" aria-pressed="true"><span class="inside-swatch inside-swatch-violet" aria-hidden="true"></span>Violet</button>
+                                <button type="button" class="inside-switch-option" data-switch="linear" aria-pressed="false"><span class="inside-swatch inside-swatch-blue" aria-hidden="true"></span>Blue</button>
+                                <button type="button" class="inside-switch-option" data-switch="silent" aria-pressed="false"><span class="inside-swatch inside-swatch-yellow" aria-hidden="true"></span>Yellow</button>
+                            </div>
+                            <div class="inside-switch-preview">
+                                <svg id="inside-switch-cutaway" viewBox="0 0 160 150" role="img" aria-labelledby="inside-cutaway-title">
+                                    <title id="inside-cutaway-title">Interior del switch: vástago, muelle y contactos</title>
+                                    <path d="M29 63 80 42 132 63 132 111 80 135 29 111Z" fill="#1e1334" stroke="#7b638d"/>
+                                    <path d="M29 63 80 87 132 63M80 87V135" fill="none" stroke="#7b638d"/>
+                                    <path d="M40 67 80 84 120 67 120 105 80 124 40 105Z" fill="#0f091d" fill-opacity=".85" stroke="#ae8dc1" stroke-dasharray="3 3"/>
+                                    <path d="m69 81 22 7-22 7 22 7-22 7 22 7" fill="none" stroke="#ffd166" stroke-width="3" stroke-linejoin="round"/>
+                                    <path d="M49 99V82L59 77M112 98V80L102 75" fill="none" stroke="#b99759" stroke-width="3"/>
+                                    <g class="inside-switch-stem">
+                                        <path d="m58 44 22-9 22 9v30L80 84 58 74Z" fill="var(--inside-switch-color)" stroke="var(--inside-switch-color)" fill-opacity=".5"/>
+                                        <path d="m58 44 22 10 22-10M80 54v30" fill="none" stroke="var(--inside-switch-color)"/>
+                                        <path d="m65 27 10-4v-9l10-4 10 4v9l10 4v10l-20 9-20-9Z" fill="var(--inside-switch-color)" stroke="#fff" stroke-opacity=".5"/>
+                                    </g>
+                                    <path d="M50 127v10M110 127v10" stroke="#b99759" stroke-width="4"/>
+                                    <path d="M104 24h36M113 103h27M91 113l13 29h36" fill="none" stroke="#6b527d"/>
+                                </svg>
+                                <div class="inside-switch-info" aria-live="polite" aria-atomic="true">
+                                    <h3 id="inside-switch-name">Neon Violet</h3>
+                                    <p id="inside-switch-type">Táctil · Click definido</p>
+                                    <dl class="inside-switch-stats">
+                                        <div><dt>FUERZA</dt><dd id="inside-switch-force">55 g</dd></div>
+                                        <div><dt>PERFIL</dt><dd id="inside-switch-sound">Sharp Click</dd></div>
+                                    </dl>
+                                </div>
+                            </div>
+                            <div class="inside-cutaway-legend"><span>Vástago</span><span>Muelle</span><span>Contactos</span></div>
+                            <button id="inside-test-switch" class="inside-test-button" type="button"><span aria-hidden="true">♪</span> Prueba la pulsación</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
     <section class="switches" id="switches">
       <div class="switches__head">
-        <h2>Selecciona tu switch</h2>
-        <p>Cada switch cambia el color de la luz y el sonido del teclado de arriba. Tócalos para escucharlos.</p>
+        <h2>Switches</h2>
       </div>
 
       <div class="switches__picker" role="radiogroup" aria-label="Tipo de switch">
         <button type="button" class="switch-card activo" role="radio" aria-checked="true" data-switch="tactile" style="--sw:330">
           <span class="switch__model" aria-hidden="true"><span class="switch__stem"></span><span class="switch__housing"></span></span>
           <span class="switch__name">Neon Violet</span>
-          <span class="switch__tipo">Tactile Clicky</span>
+          <span class="switch__tipo">Táctil</span>
           <span class="switch__desc">Sonido nítido y respuesta táctil marcada. Ideal para programar.</span>
           <span class="switch__datos"><span>Fuerza: 55 g</span><span>Sonido: Sharp Click</span></span>
         </button>
@@ -106,7 +173,7 @@
         <button type="button" class="switch-card" role="radio" aria-checked="false" data-switch="linear" style="--sw:184">
           <span class="switch__model" aria-hidden="true"><span class="switch__stem"></span><span class="switch__housing"></span></span>
           <span class="switch__name">Plasma Blue</span>
-          <span class="switch__tipo">Linear Fast</span>
+          <span class="switch__tipo">Lineal</span>
           <span class="switch__desc">Pulsación ultrasuave sin bache táctil. Diseñado para gaming.</span>
           <span class="switch__datos"><span>Fuerza: 45 g</span><span>Sonido: Clack Suave</span></span>
         </button>
@@ -114,16 +181,56 @@
         <button type="button" class="switch-card" role="radio" aria-checked="false" data-switch="silent" style="--sw:43">
           <span class="switch__model" aria-hidden="true"><span class="switch__stem"></span><span class="switch__housing"></span></span>
           <span class="switch__name">Cyber Yellow</span>
-          <span class="switch__tipo">Silent Thock</span>
+          <span class="switch__tipo">Lineal amortiguado</span>
           <span class="switch__desc">Switch lineal amortiguado. Sonido profundo y suave.</span>
           <span class="switch__datos"><span>Fuerza: 50 g</span><span>Sonido: Deep Thock</span></span>
         </button>
       </div>
 
-      <p class="switch-estado" id="switch-estado" aria-live="polite">Seleccionado: Neon Violet</p>
+      <p class="sr-only" id="switch-estado" aria-live="polite">Seleccionado: Neon Violet</p>
+
+      <div class="sound-lab" id="sound-lab" data-switch="tactile" aria-label="Vista ampliada y prueba del switch seleccionado">
+        <div class="sound-lab__visual">
+          <button id="lab-switch-key" class="lab-switch-key" type="button" aria-label="Pulsar el switch seleccionado para escucharlo">
+            <svg id="lab-switch-svg" viewBox="0 0 340 290" aria-hidden="true">
+              <defs>
+                <linearGradient id="lab-housing" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#bca1d0" stop-opacity=".2"/><stop offset="1" stop-color="#3b2457" stop-opacity=".5"/></linearGradient>
+                <linearGradient id="lab-stem-fill" x1="0" y1="0" x2="0" y2="1"><stop stop-color="hsl(var(--accent-h) 100% 83%)"/><stop offset="1" stop-color="hsl(var(--accent-h) 85% 51%)"/></linearGradient>
+              </defs>
+              <ellipse cx="170" cy="253" rx="88" ry="17" fill="#03010b" opacity=".5"/>
+              <g class="lab-switch-body">
+                <path d="m82 134 88-38 88 38v77l-88 40-88-40Z" fill="url(#lab-housing)" stroke="#ab8bc9" stroke-width="1.5"/>
+                <path d="m82 134 88 39 88-39M170 173v78" fill="none" stroke="#b69bcd" stroke-width="1.5"/>
+                <path d="m101 148 69 30 69-30v51l-69 32-69-32Z" fill="#13091f" fill-opacity=".76" stroke="#7c589c" stroke-dasharray="4 5"/>
+                <path d="M119 196v-39l15-8M224 196v-39l-15-8" fill="none" stroke="#c6a05d" stroke-width="5" stroke-linejoin="round"/>
+                <path class="lab-tactile-leaf" d="M125 184v-19l19-10-8-12 12-7" fill="none" stroke="#ffd36e" stroke-width="4" stroke-linejoin="round"/>
+                <path d="M121 233v21M219 233v21" fill="none" stroke="#c6a05d" stroke-width="6"/>
+                <g class="lab-switch-spring"><path d="m151 162 38 12-38 12 38 12-38 12 38 12" fill="none" stroke="#ffd36e" stroke-width="4" stroke-linejoin="round"/></g>
+                <g class="lab-switch-stem">
+                  <path d="m132 103 38-16 38 16v48l-38 17-38-17Z" fill="hsl(var(--accent-h) 100% 65% / .5)" stroke="hsl(var(--accent-h) 100% 73%)" stroke-width="1.5"/>
+                  <path d="m132 103 38 17 38-17M170 120v48" fill="none" stroke="hsl(var(--accent-h) 100% 78%)"/>
+                  <g class="lab-silent-dampers" fill="#cce3d4" stroke="#fff" stroke-opacity=".5"><path d="m132 145 12 5v9l-12-5Z"/><path d="m196 151 12-5v9l-12 5Z"/></g>
+                  <path d="m143 72 16-7V47l17-7 17 7v18l16 7v17l-33 15-33-15Z" fill="url(#lab-stem-fill)" stroke="#f4dbff" stroke-opacity=".7" stroke-width="1.5"/>
+                  <path d="m143 72 33 15 33-15M176 87v17" fill="none" stroke="#fff" stroke-opacity=".4"/>
+                </g>
+              </g>
+              <g class="lab-annotations" fill="none" stroke="#9575ac">
+                <path d="M193 53h46l15-14h45"/><path d="m185 188 53 26h61"/><path d="M119 185H57l-15-14H14"/>
+              </g>
+              <g class="lab-annotation-text" fill="#cdb4df" font-family="VT323, monospace" font-size="15"><text x="252" y="30">Vástago</text><text x="263" y="205">Muelle</text><text x="10" y="162">Contactos</text></g>
+            </svg>
+          </button>
+        </div>
+        <div class="sound-lab__detail">
+          <h3 id="lab-switch-name">Neon Violet</h3>
+          <dl class="lab-stats"><div><dt>FUERZA</dt><dd id="lab-switch-force">55 g</dd></div><div><dt>SENSACIÓN</dt><dd id="lab-switch-feel">Táctil</dd></div><div><dt>SONIDO</dt><dd id="lab-switch-sound">Sharp Click</dd></div></dl>
+          <div class="lab-wave" aria-hidden="true"></div>
+          <div class="lab-actions"><button id="lab-listen" class="btn" type="button">Escuchar switch <span aria-hidden="true">♪</span></button><button id="lab-typing" class="inside-outline-button" type="button" aria-pressed="false">Prueba de escritura</button></div>
+          <p class="sr-only" id="lab-playback-status" role="status"></p>
+        </div>
+      </div>
     </section>
 
-    <!-- ESPECIFICACIONES · pendiente (ver TAREAS.md) -->
     <section class="pendiente" id="specs">
    
     <section class="specs-section" id="specs">
@@ -131,37 +238,31 @@
         <h2 class="specs-title text-cyber-reveal">// FICHA TÉCNICA</h2>
         
         <div class="specs-grid">
-          <!-- Item 1 -->
           <div class="spec-card text-cyber-reveal">
             <span class="spec-label">Formato</span>
             <strong class="spec-value">75%, 84 teclas + perilla</strong>
           </div>
 
-          <!-- Item 2 -->
           <div class="spec-card text-cyber-reveal">
             <span class="spec-label">Conexión</span>
             <strong class="spec-value">USB-C, Bluetooth 5.3 y 2,4 GHz</strong>
           </div>
 
-          <!-- Item 3 -->
           <div class="spec-card text-cyber-reveal">
             <span class="spec-label">Batería</span>
             <strong class="spec-value">4000 mAh, hasta 200 h sin luz</strong>
           </div>
 
-          <!-- Item 4 -->
           <div class="spec-card text-cyber-reveal">
             <span class="spec-label">Luz</span>
             <strong class="spec-value">RGB por tecla, 4 modos</strong>
           </div>
 
-          <!-- Item 5 -->
           <div class="spec-card text-cyber-reveal">
             <span class="spec-label">Polling</span>
             <strong class="spec-value">1000 Hz con cable</strong>
           </div>
 
-          <!-- Item 6 -->
           <div class="spec-card text-cyber-reveal">
             <span class="spec-label">Peso</span>
             <strong class="spec-value">1,6 kg</strong>
@@ -172,10 +273,8 @@
 
     </section>
 
-    <!-- RESERVA · pendiente (ver TAREAS.md) -->
     <section class="pendiente" id="reservar">
       <h2>Reserva tu teclado</h2>
-     <!-- RESERVA DE KEYWAVE 75 -->
     <section class="reservar-section" id="reservar">
       <div class="reservar-card">
         <h2 class="text-cyber-reveal">Reserva tu KEYWAVE 75</h2>
