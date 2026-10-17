@@ -640,10 +640,46 @@ navToggle.addEventListener("click", () => {
 menu.querySelectorAll("a").forEach((a) => a.addEventListener("click", cerrarMenu));
 
 
+/* ---------------------------------------------------------
+   Mensaje de reserva (reemplaza al alert)
+   --------------------------------------------------------- */
+const modalReserva = document.getElementById("modal-reserva");
+const modalDetalle = document.getElementById("modal-detalle");
+const modalCerrar = document.getElementById("modal-cerrar");
+let focoPrevio = null;
+
+function abrirModal(detalle) {
+  focoPrevio = document.activeElement;
+  modalDetalle.textContent = detalle || "";
+  modalReserva.hidden = false;
+  // doble frame para que la transición CSS parta del estado inicial
+  requestAnimationFrame(() => requestAnimationFrame(() => modalReserva.classList.add("is-open")));
+  modalCerrar.focus();
+  // destello de luz en el teclado del hero, si existe
+  if (typeof addRipple === "function") addRipple(8, 3, { speed: 16, width: 2, life: 1.4, amp: 0.9 });
+}
+
+function cerrarModal() {
+  modalReserva.classList.remove("is-open");
+  setTimeout(() => {
+    modalReserva.hidden = true;
+    if (focoPrevio) focoPrevio.focus();
+  }, reduceMotion ? 0 : 350);
+}
+
+modalCerrar.addEventListener("click", cerrarModal);
+modalReserva.addEventListener("click", (e) => { if (e.target === modalReserva) cerrarModal(); });
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && !modalReserva.hidden) cerrarModal();
+});
 
 function confirmarReserva(event) {
   event.preventDefault();
-  alert('¡Reserva completada! Tu orden de KEYWAVE 75 ha sido registrada con éxito.');
+  const selects = event.target.querySelectorAll("select");
+  const layout = selects[0].options[selects[0].selectedIndex].text;
+  const sw = selects[1].options[selects[1].selectedIndex].text;
+  abrirModal(`${layout} · ${sw}`);
+  event.target.reset();
 }
 
 
@@ -707,3 +743,63 @@ document.addEventListener("DOMContentLoaded", () => {
 
   elementsToReveal.forEach((el) => revealObserver.observe(el));
 });
+
+/* ---------------------------------------------------------
+   10. Contadores animados (ficha técnica, precio y stock)
+   Cada número parte en 0 y sube con easing exponencial
+   (arranca rápido y frena al llegar a la meta).
+   --------------------------------------------------------- */
+(() => {
+  const contadores = document.querySelectorAll(".contador");
+  if (!contadores.length) return;
+
+  const formato = (el, valor) => {
+    let s = valor.toFixed(Number(el.dataset.decimales || 0));
+    if (el.dataset.coma) s = s.replace(".", ",");
+    return s;
+  };
+  const easeOutExpo = (t) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t));
+
+  function animar(el, retardo) {
+    const meta = parseFloat(el.dataset.meta);
+    const duracion = Number(el.dataset.duracion || 1600);
+    if (reduceMotion) { el.textContent = formato(el, meta); return; }
+    setTimeout(() => {
+      el.classList.add("contando");
+      const t0 = performance.now();
+      const paso = (ahora) => {
+        const p = Math.min((ahora - t0) / duracion, 1);
+        el.textContent = formato(el, meta * easeOutExpo(p));
+        if (p < 1) requestAnimationFrame(paso);
+        else { el.classList.remove("contando"); el.classList.add("listo"); }
+      };
+      requestAnimationFrame(paso);
+    }, retardo);
+  }
+
+  // Estado inicial: todo en 0 (el HTML trae el valor final por si falla el JS)
+  if (!reduceMotion) contadores.forEach((el) => (el.textContent = formato(el, 0)));
+
+  // Se observa el contenedor de cada número; el conteo parte cuando aparece
+  const contenedores = new Map();
+  contadores.forEach((el) => {
+    const cont = el.closest(".spec-card, .reservar-precio, .reserva-stock") || el;
+    if (!contenedores.has(cont)) contenedores.set(cont, []);
+    contenedores.get(cont).push(el);
+  });
+
+  const obs = new IntersectionObserver((entradas, o) => {
+    entradas.forEach((e) => {
+      if (!e.isIntersecting) return;
+      const grupo = contenedores.get(e.target);
+      // escalonado: misma cadencia (120 ms) que la aparición de las tarjetas
+      const tarjetas = [...document.querySelectorAll(".specs-grid .spec-card")];
+      const i = tarjetas.indexOf(e.target);
+      const retardo = (i >= 0 ? i * 120 : 0) + 200;
+      grupo.forEach((el) => animar(el, retardo));
+      o.unobserve(e.target);
+    });
+  }, { threshold: 0.3 });
+
+  contenedores.forEach((_, cont) => obs.observe(cont));
+})();
