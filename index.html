@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="es">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,9 +9,11 @@
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Silkscreen&family=VT323&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Silkscreen&family=VT323&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
 
   <div id="scroll-progress-container" aria-hidden="true">
@@ -19,7 +22,8 @@
 
   <header class="nav" id="nav">
     <a class="nav__logo" href="#inicio" aria-label="KEYWAVE, inicio">KEYWAVE</a>
-    <button class="nav__toggle" id="nav-toggle" aria-expanded="false" aria-controls="menu-principal" aria-label="Abrir menú">
+    <button class="nav__toggle" id="nav-toggle" aria-expanded="false" aria-controls="menu-principal"
+      aria-label="Abrir menú">
       <span></span><span></span><span></span>
     </button>
     <nav class="nav__links" id="menu-principal" aria-label="Secciones">
@@ -36,7 +40,8 @@
         <canvas class="scene__stars" id="stars"></canvas>
         <div class="scene__sun-glow"></div>
         <div class="scene__sun" id="sun"></div>
-        <video class="scene__video" id="video-fondo" autoplay muted loop playsinline preload="auto" poster="assets/video/fondo-synthwave.jpg">
+        <video class="scene__video" id="video-fondo" autoplay muted loop playsinline preload="auto"
+          poster="assets/video/fondo-synthwave.jpg">
           <source src="assets/video/fondo-synthwave.mp4" type="video/mp4">
         </video>
       </div>
@@ -47,32 +52,43 @@
 
         <label class="screen" id="screen" for="entrada">
           <input class="screen__input" id="entrada" type="text" autocomplete="off" autocorrect="off"
-                 autocapitalize="off" spellcheck="false" enterkeyhint="done" aria-label="Escribe para iluminar el teclado">
-          <span class="screen__text" id="screen-text" aria-hidden="true" data-placeholder="Escribe o toca una tecla…"></span><span class="screen__caret" aria-hidden="true"></span>
+            autocapitalize="off" spellcheck="false" enterkeyhint="done" aria-label="Escribe para iluminar el teclado">
+          <span class="screen__text" id="screen-text" aria-hidden="true"
+            data-placeholder="Escribe o toca una tecla…"></span><span class="screen__caret" aria-hidden="true"></span>
           <span class="screen__ppm" id="screen-ppm" aria-hidden="true"><b>0</b> ppm</span>
         </label>
 
         <div class="board-wrap" id="board-wrap">
-          <div class="board" id="teclado-interactivo" role="img" aria-label="Teclado KEYWAVE 75 interactivo. Escribe con tu teclado o toca las teclas para iluminarlas."></div>
+          <div class="board" id="teclado-interactivo" role="img"
+            aria-label="Teclado KEYWAVE 75 interactivo. Escribe con tu teclado o toca las teclas para iluminarlas.">
+          </div>
         </div>
 
         <div class="hero__controls">
           <div class="segmented" id="modos" role="radiogroup" aria-label="Modo de luz">
             <span class="segmented__thumb" aria-hidden="true"></span>
-            <button class="mode is-active" role="radio" aria-checked="true" tabindex="0" data-mode="reactivo">Reactivo</button>
+            <button class="mode is-active" role="radio" aria-checked="true" tabindex="0"
+              data-mode="reactivo">Reactivo</button>
             <button class="mode" role="radio" aria-checked="false" tabindex="-1" data-mode="ola">Ola</button>
             <button class="mode" role="radio" aria-checked="false" tabindex="-1" data-mode="respira">Pulso</button>
             <button class="mode" role="radio" aria-checked="false" tabindex="-1" data-mode="estatico">Fijo</button>
           </div>
           <button class="icon-btn" id="sound" aria-pressed="true" aria-label="Sonido de las teclas">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z"/><path class="sound__waves" d="M16 9a4 4 0 0 1 0 6M18.5 6.5a7.5 7.5 0 0 1 0 11"/></svg>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 9h4l5-4v14l-5-4H4z" />
+              <path class="sound__waves" d="M16 9a4 4 0 0 1 0 6M18.5 6.5a7.5 7.5 0 0 1 0 11" />
+            </svg>
           </button>
         </div>
       </div>
 
       <button class="icon-btn hero__pausa" id="pausa-fondo" aria-pressed="false" aria-label="Pausar el fondo animado">
-        <svg class="icono-pausa" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg>
-        <svg class="icono-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5l12 7-12 7z"/></svg>
+        <svg class="icono-pausa" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M8 5v14M16 5v14" />
+        </svg>
+        <svg class="icono-play" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M7 5l12 7-12 7z" />
+        </svg>
       </button>
     </section>
 
@@ -162,24 +178,30 @@
       </div>
 
       <div class="switches__picker" role="radiogroup" aria-label="Tipo de switch">
-        <button type="button" class="switch-card activo" role="radio" aria-checked="true" data-switch="tactile" style="--sw:330">
-          <span class="switch__model" aria-hidden="true"><span class="switch__stem"></span><span class="switch__housing"></span></span>
+        <button type="button" class="switch-card activo" role="radio" aria-checked="true" data-switch="tactile"
+          style="--sw:330">
+          <span class="switch__model" aria-hidden="true"><span class="switch__stem"></span><span
+              class="switch__housing"></span></span>
           <span class="switch__name">Neon Violet</span>
           <span class="switch__tipo">Táctil</span>
           <span class="switch__desc">Sonido nítido y respuesta táctil marcada. Ideal para programar.</span>
           <span class="switch__datos"><span>Fuerza: 55 g</span><span>Sonido: Sharp Click</span></span>
         </button>
 
-        <button type="button" class="switch-card" role="radio" aria-checked="false" data-switch="linear" style="--sw:184">
-          <span class="switch__model" aria-hidden="true"><span class="switch__stem"></span><span class="switch__housing"></span></span>
+        <button type="button" class="switch-card" role="radio" aria-checked="false" data-switch="linear"
+          style="--sw:184">
+          <span class="switch__model" aria-hidden="true"><span class="switch__stem"></span><span
+              class="switch__housing"></span></span>
           <span class="switch__name">Plasma Blue</span>
           <span class="switch__tipo">Lineal</span>
           <span class="switch__desc">Pulsación ultrasuave sin bache táctil. Diseñado para gaming.</span>
           <span class="switch__datos"><span>Fuerza: 45 g</span><span>Sonido: Clack Suave</span></span>
         </button>
 
-        <button type="button" class="switch-card" role="radio" aria-checked="false" data-switch="silent" style="--sw:43">
-          <span class="switch__model" aria-hidden="true"><span class="switch__stem"></span><span class="switch__housing"></span></span>
+        <button type="button" class="switch-card" role="radio" aria-checked="false" data-switch="silent"
+          style="--sw:43">
+          <span class="switch__model" aria-hidden="true"><span class="switch__stem"></span><span
+              class="switch__housing"></span></span>
           <span class="switch__name">Cyber Yellow</span>
           <span class="switch__tipo">Lineal amortiguado</span>
           <span class="switch__desc">Switch lineal amortiguado. Sonido profundo y suave.</span>
@@ -232,89 +254,117 @@
     </section>
 
     <section class="pendiente" id="specs">
-   
-    <section class="specs-section" id="specs">
-      <div class="specs-container">
-        <h2 class="specs-title text-cyber-reveal">// FICHA TÉCNICA</h2>
-        
-        <div class="specs-grid">
-          <div class="spec-card text-cyber-reveal">
-            <span class="spec-label">Formato</span>
-            <strong class="spec-value">75%, 84 teclas + perilla</strong>
-          </div>
 
-          <div class="spec-card text-cyber-reveal">
-            <span class="spec-label">Conexión</span>
-            <strong class="spec-value">USB-C, Bluetooth 5.3 y 2,4 GHz</strong>
-          </div>
+      <section class="specs-section" id="specs">
+        <div class="specs-container">
+          <h2 class="specs-title text-cyber-reveal">// FICHA TÉCNICA</h2>
 
-          <div class="spec-card text-cyber-reveal">
-            <span class="spec-label">Batería</span>
-            <strong class="spec-value">4000 mAh, hasta 200 h sin luz</strong>
-          </div>
+          <div class="specs-grid">
+            <!-- Item 1 -->
+            <div class="spec-card text-cyber-reveal">
+              <span class="spec-label">Formato</span>
+              <strong class="spec-value"><span class="contador" data-meta="75">75</span>%, <span class="contador"
+                  data-meta="84">84</span> teclas + perilla</strong>
+            </div>
 
-          <div class="spec-card text-cyber-reveal">
-            <span class="spec-label">Luz</span>
-            <strong class="spec-value">RGB por tecla, 4 modos</strong>
-          </div>
+            <!-- Item 2 -->
+            <div class="spec-card text-cyber-reveal">
+              <span class="spec-label">Conexión</span>
+              <strong class="spec-value">USB-C, Bluetooth 5.3 y 2,4 GHz</strong>
+            </div>
 
-          <div class="spec-card text-cyber-reveal">
-            <span class="spec-label">Polling</span>
-            <strong class="spec-value">1000 Hz con cable</strong>
-          </div>
+            <!-- Item 3 -->
+            <div class="spec-card text-cyber-reveal">
+              <span class="spec-label">Batería</span>
+              <strong class="spec-value"><span class="contador" data-meta="4000">4000</span> mAh, hasta <span
+                  class="contador" data-meta="200">200</span> h sin luz</strong>
+            </div>
 
-          <div class="spec-card text-cyber-reveal">
-            <span class="spec-label">Peso</span>
-            <strong class="spec-value">1,6 kg</strong>
+            <!-- Item 4 -->
+            <div class="spec-card text-cyber-reveal">
+              <span class="spec-label">Luz</span>
+              <strong class="spec-value">RGB por tecla, <span class="contador" data-meta="4">4</span> modos</strong>
+            </div>
+
+            <!-- Item 5 -->
+            <div class="spec-card text-cyber-reveal">
+              <span class="spec-label">Polling</span>
+              <strong class="spec-value"><span class="contador" data-meta="1000">1000</span> Hz con cable</strong>
+            </div>
+
+            <!-- Item 6 -->
+            <div class="spec-card text-cyber-reveal">
+              <span class="spec-label">Peso</span>
+              <strong class="spec-value"><span class="contador" data-meta="1.6" data-decimales="1"
+                  data-coma="true">1,6</span> kg</strong>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
     </section>
 
     <section class="pendiente" id="reservar">
       <h2>Reserva tu teclado</h2>
-    <section class="reservar-section" id="reservar">
-      <div class="reservar-card">
-        <h2 class="text-cyber-reveal">Reserva tu KEYWAVE 75</h2>
-        <p class="reservar-lead text-cyber-reveal">Garantía de 2 años, reemplazo de switches y envío prioritario incluido.</p>
+      <!-- RESERVA DE KEYWAVE 75 -->
+      <section class="reservar-section" id="reservar">
+        <div class="reservar-card">
+          <h2 class="text-cyber-reveal">Reserva tu KEYWAVE 75</h2>
+          <p class="reservar-lead text-cyber-reveal">Garantía de 2 años, reemplazo de switches y envío prioritario
+            incluido.</p>
 
-        <div class="reservar-precio text-cyber-reveal">
-          <span class="precio-actual">$189.99</span>
-          <span class="precio-anterior">$249.99</span>
-        </div>
-
-        <form id="form-reserva" class="reservar-form text-cyber-reveal" onsubmit="confirmarReserva(event)">
-          <div class="reservar-selects">
-            <select required class="reserva-input">
-              <option value="">Selecciona Layout</option>
-              <option value="es">Español (Con Ñ)</option>
-              <option value="us">Inglés US</option>
-            </select>
-            <select required class="reserva-input">
-              <option value="">Selecciona Switch</option>
-              <option value="violet">Neon Violet (Tactile)</option>
-              <option value="blue">Plasma Blue (Linear)</option>
-              <option value="yellow">Cyber Yellow (Silent Thock)</option>
-            </select>
+          <div class="reservar-precio text-cyber-reveal">
+            <span class="precio-actual">$<span class="contador" data-meta="189.99" data-decimales="2"
+                data-duracion="2000">189.99</span></span>
+            <span class="precio-anterior">$<span class="contador" data-meta="249.99" data-decimales="2"
+                data-duracion="2000">249.99</span></span>
           </div>
 
-          <button type="submit" class="btn">
-            CONFIRMAR RESERVA
-          </button>
-        </form>
+          <form id="form-reserva" class="reservar-form text-cyber-reveal" onsubmit="confirmarReserva(event)">
+            <div class="reservar-selects">
+              <select required class="reserva-input">
+                <option value="">Selecciona Layout</option>
+                <option value="es">Español (Con Ñ)</option>
+                <option value="us">Inglés US</option>
+              </select>
+              <select required class="reserva-input">
+                <option value="">Selecciona Switch</option>
+                <option value="violet">Neon Violet (Tactile)</option>
+                <option value="blue">Plasma Blue (Linear)</option>
+                <option value="yellow">Cyber Yellow (Silent Thock)</option>
+              </select>
+            </div>
 
-        <p class="reserva-stock text-cyber-reveal">Quedan exactamente 14 unidades disponibles en el inventario.</p>
-      </div>
-    </section>
+            <button type="submit" class="btn">
+              CONFIRMAR RESERVA
+            </button>
+          </form>
+
+          <p class="reserva-stock text-cyber-reveal">Quedan exactamente <span class="contador" data-meta="14">14</span>
+            unidades disponibles en el inventario.</p>
+        </div>
+      </section>
     </section>
   </main>
 
+
+  <!-- Mensaje de reserva confirmada (reemplaza al alert) -->
+  <div class="modal-reserva" id="modal-reserva" role="dialog" aria-modal="true" aria-labelledby="modal-titulo"
+    aria-describedby="modal-texto" hidden>
+    <div class="modal-reserva__caja">
+      <h3 class="modal-reserva__titulo" id="modal-titulo">¡Reserva completada!</h3>
+      <p class="modal-reserva__texto" id="modal-texto">
+        Tu orden de KEYWAVE 75 ha sido registrada con éxito.
+      </p>
+      <p class="modal-reserva__detalle" id="modal-detalle"></p>
+      <button type="button" class="btn" id="modal-cerrar">ACEPTAR</button>
+    </div>
+  </div>
   <footer class="footer">
     <p>KEYWAVE es un producto ficticio. Taller 1 · Desarrollo de Soluciones Web/Móvil · UCN 2026</p>
   </footer>
 
   <script src="js/script.js"></script>
 </body>
+
 </html>
