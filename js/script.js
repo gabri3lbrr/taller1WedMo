@@ -1,12 +1,6 @@
-/* =========================================================
-   KEYWAVE 75 — interacción y animaciones (sin librerías)
-   ========================================================= */
-
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const clamp = (v, min = 0, max = 1) => Math.min(max, Math.max(min, v));
 
-/* 1. Distribución del teclado 75% (ancho total: 16 unidades)
-   [leyenda, event.code, ancho, carácter que escribe] */
 const LETTERS = (s) => [...s].map((c) => [c, "Key" + c, 1, c.toLowerCase()]);
 const DIGITS = [..."1234567890"].map((d) => [d, "Digit" + d, 1, d]);
 
@@ -79,11 +73,6 @@ function ajustarLeyendas() {
 }
 document.fonts.ready.then(ajustarLeyendas);
 
-/* 2. Motor de luz (animación propia del equipo)
-   Cada pulsación crea una onda circular que se expande desde la tecla.
-   La luz de cada tecla depende de su distancia d al frente de la onda:
-       r(t) = v · (t − t0)
-       luz  = A · e^(−(d − r)² / w²) · (1 − edad/vida) */
 const state = {
   mode: "reactivo",
   hue: 330,
@@ -198,7 +187,6 @@ if (conMouse && !reduceMotion) {
   });
 }
 
-/* 3. Sonido sintetizado (Web Audio, sin archivos) */
 let audio = null;
 let noiseBuffer = null;
 
@@ -254,7 +242,6 @@ function playClick(kind = state.switchType, pitch = 1) {
   }
 }
 
-/* 4. Pulsar y soltar teclas (teclado físico, mouse, touch y teclado del celular) */
 const screenText = document.getElementById("screen-text");
 const screenPpm = document.getElementById("screen-ppm");
 let typed = "";
@@ -374,7 +361,6 @@ const endPointer = (e) => {
 ["pointerup", "pointercancel", "pointerleave"].forEach((t) => board.addEventListener(t, endPointer));
 window.addEventListener("pointerup", endPointer);
 
-/* 5. Modos de luz, perilla y sonido */
 const MODES = ["reactivo", "ola", "respira", "estatico"];
 const modeButtons = document.querySelectorAll(".mode");
 const segmentado = document.getElementById("modos");
@@ -414,7 +400,6 @@ soundBtn.addEventListener("click", () => {
   soundBtn.setAttribute("aria-pressed", state.sound);
 });
 
-/* 6. Selector de switches (cambia color y sonido del teclado) */
 const tarjetasSwitch = document.querySelectorAll(".switch-card, .inside-switch-option");
 const estadoSwitch = document.getElementById("switch-estado");
 const nombresSwitch = { tactile: "Neon Violet", linear: "Plasma Blue", silent: "Cyber Yellow" };
@@ -451,7 +436,6 @@ tarjetasSwitch.forEach((tarjeta) => {
   });
 });
 
-/* 7. Cielo de estrellas (canvas, animación de fondo) */
 const canvas = document.getElementById("stars");
 const ctx2d = canvas.getContext("2d");
 let stars = [];
@@ -525,7 +509,6 @@ new IntersectionObserver(([e]) => {
   if (skyVisible && !was && !reduceMotion && !fondoPausado) requestAnimationFrame(drawSky);
 }).observe(canvas);
 
-/* 8. Animaciones ligadas al scroll (barra de progreso, parallax, sol) */
 const nav = document.getElementById("nav");
 const hero = document.querySelector(".hero");
 const scene = document.getElementById("scene");
@@ -582,7 +565,6 @@ window.addEventListener("scroll", () => {
 }, { passive: true });
 onScroll();
 
-/* 9. Menú en celulares */
 const navToggle = document.getElementById("nav-toggle");
 const menu = document.getElementById("menu-principal");
 function cerrarMenu() {
@@ -598,12 +580,74 @@ navToggle.addEventListener("click", () => {
 menu.querySelectorAll("a").forEach((a) => a.addEventListener("click", cerrarMenu));
 
 
+/* ---------------------------------------------------------
+   Mensaje de reserva (reemplaza al alert)
+   --------------------------------------------------------- */
+const modalReserva = document.getElementById("modal-reserva");
+const modalDetalle = document.getElementById("modal-detalle");
+const modalCerrar = document.getElementById("modal-cerrar");
+let focoPrevio = null;
 
-/* 10. Reserva y ficha técnica (entrada escalonada al aparecer) */
+function abrirModal(detalle) {
+  focoPrevio = document.activeElement;
+  modalDetalle.textContent = detalle || "";
+  modalReserva.hidden = false;
+  // doble frame para que la transición CSS parta del estado inicial
+  requestAnimationFrame(() => requestAnimationFrame(() => modalReserva.classList.add("is-open")));
+  modalCerrar.focus();
+  // destello de luz en el teclado del hero, si existe
+  if (typeof addRipple === "function") addRipple(8, 3, { speed: 16, width: 2, life: 1.4, amp: 0.9 });
+}
+
+function cerrarModal() {
+  modalReserva.classList.remove("is-open");
+  setTimeout(() => {
+    modalReserva.hidden = true;
+    if (focoPrevio) focoPrevio.focus();
+  }, reduceMotion ? 0 : 350);
+}
+
+modalCerrar.addEventListener("click", cerrarModal);
+modalReserva.addEventListener("click", (e) => { if (e.target === modalReserva) cerrarModal(); });
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && !modalReserva.hidden) cerrarModal();
+});
+
 function confirmarReserva(event) {
   event.preventDefault();
-  alert('¡Reserva completada! Tu orden de KEYWAVE 75 ha sido registrada con éxito.');
+  const selects = event.target.querySelectorAll("select");
+  const layout = selects[0].options[selects[0].selectedIndex].text;
+  const sw = selects[1].options[selects[1].selectedIndex].text;
+  abrirModal(`${layout} · ${sw}`);
+  event.target.reset();
 }
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  const elementsToReveal = document.querySelectorAll(".text-cyber-reveal");
+
+  const revealObserver = new IntersectionObserver(
+    (entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const cards = Array.from(document.querySelectorAll(".specs-grid .spec-card"));
+          const index = cards.indexOf(entry.target);
+          
+          const delay = index >= 0 ? index * 120 : 0;
+
+          setTimeout(() => {
+            entry.target.classList.add("is-visible");
+          }, delay);
+
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.15 }
+  );
+
+  elementsToReveal.forEach((el) => revealObserver.observe(el));
+});
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -1195,4 +1239,63 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     document.addEventListener("visibilitychange", () => { if (document.hidden) stopSequence(); });
     window.addEventListener("pagehide", stopSequence);
+})();
+/* ---------------------------------------------------------
+   10. Contadores animados (ficha técnica, precio y stock)
+   Cada número parte en 0 y sube con easing exponencial
+   (arranca rápido y frena al llegar a la meta).
+   --------------------------------------------------------- */
+(() => {
+  const contadores = document.querySelectorAll(".contador");
+  if (!contadores.length) return;
+
+  const formato = (el, valor) => {
+    let s = valor.toFixed(Number(el.dataset.decimales || 0));
+    if (el.dataset.coma) s = s.replace(".", ",");
+    return s;
+  };
+  const easeOutExpo = (t) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t));
+
+  function animar(el, retardo) {
+    const meta = parseFloat(el.dataset.meta);
+    const duracion = Number(el.dataset.duracion || 1600);
+    if (reduceMotion) { el.textContent = formato(el, meta); return; }
+    setTimeout(() => {
+      el.classList.add("contando");
+      const t0 = performance.now();
+      const paso = (ahora) => {
+        const p = Math.min((ahora - t0) / duracion, 1);
+        el.textContent = formato(el, meta * easeOutExpo(p));
+        if (p < 1) requestAnimationFrame(paso);
+        else { el.classList.remove("contando"); el.classList.add("listo"); }
+      };
+      requestAnimationFrame(paso);
+    }, retardo);
+  }
+
+  // Estado inicial: todo en 0 (el HTML trae el valor final por si falla el JS)
+  if (!reduceMotion) contadores.forEach((el) => (el.textContent = formato(el, 0)));
+
+  // Se observa el contenedor de cada número; el conteo parte cuando aparece
+  const contenedores = new Map();
+  contadores.forEach((el) => {
+    const cont = el.closest(".spec-card, .reservar-precio, .reserva-stock") || el;
+    if (!contenedores.has(cont)) contenedores.set(cont, []);
+    contenedores.get(cont).push(el);
+  });
+
+  const obs = new IntersectionObserver((entradas, o) => {
+    entradas.forEach((e) => {
+      if (!e.isIntersecting) return;
+      const grupo = contenedores.get(e.target);
+      // escalonado: misma cadencia (120 ms) que la aparición de las tarjetas
+      const tarjetas = [...document.querySelectorAll(".specs-grid .spec-card")];
+      const i = tarjetas.indexOf(e.target);
+      const retardo = (i >= 0 ? i * 120 : 0) + 200;
+      grupo.forEach((el) => animar(el, retardo));
+      o.unobserve(e.target);
+    });
+  }, { threshold: 0.3 });
+
+  contenedores.forEach((_, cont) => obs.observe(cont));
 })();

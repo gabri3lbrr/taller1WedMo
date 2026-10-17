@@ -1201,3 +1201,142 @@ a { color: inherit; }
   .inside-section *, .sound-lab *, .switch-card, .switch-card * { animation: none !important; transition: none !important; }
   .inside-layer-visual, .switch__model, .lab-switch-key svg { transform: none !important; }
 }
+/* =========================================================
+   FICHA TÉCNICA · extras Vaporwave
+   ========================================================= */
+
+/* Grilla neón de fondo, muy suave */
+.specs-section {
+  background:
+    linear-gradient(180deg, var(--night) 0%, transparent 25%, transparent 75%, var(--night) 100%),
+    repeating-linear-gradient(0deg, rgba(255, 45, 149, .07) 0 1px, transparent 1px 48px),
+    repeating-linear-gradient(90deg, rgba(45, 226, 255, .06) 0 1px, transparent 1px 48px),
+    var(--night);
+}
+
+/* Números: brillo neón mientras cuentan, se calman al llegar */
+.contador {
+  display: inline-block;
+  font-variant-numeric: tabular-nums;
+  color: var(--cyan);
+  text-shadow: 0 0 8px rgba(45, 226, 255, .7);
+  transition: color .4s ease, text-shadow .4s ease;
+}
+.contador.contando {
+  color: var(--magenta);
+  text-shadow: 0 0 10px var(--magenta), 0 0 22px rgba(255, 45, 149, .6);
+}
+.precio-actual .contador,
+.precio-anterior .contador { text-shadow: none; }
+.precio-actual .contador { color: var(--magenta); }
+.precio-anterior .contador { color: var(--muted); }
+.precio-actual .contador.contando { text-shadow: 0 0 12px var(--magenta); }
+
+/* Barrido de luz sobre la tarjeta cuando aparece */
+.spec-card { overflow: hidden; }
+.spec-card::after {
+  content: "";
+  position: absolute; top: 0; bottom: 0; left: -60%;
+  width: 40%;
+  background: linear-gradient(100deg, transparent, rgba(45, 226, 255, .25), transparent);
+  transform: skewX(-20deg);
+  pointer-events: none;
+}
+.spec-card.is-visible::after { animation: barrido 1.1s ease-out .15s 1 both; }
+@keyframes barrido {
+  from { left: -60%; }
+  to   { left: 130%; }
+}
+
+/* El borde magenta "se enciende" al aparecer */
+.spec-card.is-visible { animation: encender .9s ease-out both; }
+@keyframes encender {
+  0%   { border-left-color: transparent; }
+  60%  { border-left-color: var(--magenta); box-shadow: -6px 0 18px rgba(255, 45, 149, .55); }
+  100% { border-left-color: var(--magenta); box-shadow: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spec-card.is-visible, .spec-card.is-visible::after { animation: none; }
+  .contador { transition: none; }
+}
+
+/* =========================================================
+   MODAL DE RESERVA · Vaporwave
+   ========================================================= */
+.modal-reserva {
+  position: fixed; inset: 0; z-index: 100;
+  display: grid; place-items: center;
+  padding: 1rem;
+  background: rgba(13, 6, 32, 0);
+  backdrop-filter: blur(0);
+  transition: background .35s ease, backdrop-filter .35s ease;
+}
+.modal-reserva[hidden] { display: none; }
+.modal-reserva.is-open {
+  background: rgba(13, 6, 32, .8);
+  backdrop-filter: blur(6px);
+}
+
+.modal-reserva__caja {
+  position: relative;
+  width: min(100%, 440px);
+  padding: 2.2rem 1.8rem 1.8rem;
+  text-align: center;
+  background:
+    repeating-linear-gradient(180deg, #ffffff07 0 1px, transparent 1px 3px),
+    linear-gradient(180deg, var(--night-2), var(--night));
+  border: 2px solid var(--cyan);
+  box-shadow: 0 0 30px rgba(45, 226, 255, .35), inset 0 0 30px rgba(255, 45, 149, .12);
+  opacity: 0;
+  transform: translateY(40px) scale(.92);
+  transition: opacity .35s ease, transform .45s cubic-bezier(.3, 1.5, .5, 1);
+  overflow: hidden;
+}
+.modal-reserva.is-open .modal-reserva__caja { opacity: 1; transform: none; }
+
+/* línea de luz que recorre el borde superior */
+.modal-reserva__caja::before {
+  content: ""; position: absolute; top: 0; left: -40%;
+  width: 40%; height: 3px;
+  background: linear-gradient(90deg, transparent, var(--magenta), var(--cyan), transparent);
+  box-shadow: 0 0 12px var(--cyan);
+}
+.modal-reserva.is-open .modal-reserva__caja::before { animation: modal-barrido 1.6s ease-in-out .3s infinite; }
+@keyframes modal-barrido { from { left: -40%; } to { left: 100%; } }
+
+.modal-reserva__etiqueta {
+  font-family: var(--ui); font-size: .8rem;
+  color: var(--muted); letter-spacing: .08em;
+  margin-bottom: .8rem;
+}
+.modal-reserva__titulo {
+  font-family: var(--display);
+  font-size: clamp(1rem, 4vw, 1.35rem);
+  line-height: 1.4;
+  color: var(--chrome);
+  text-shadow: 0 0 10px var(--cyan), 0 0 22px rgba(255, 45, 149, .6);
+  margin-bottom: 1rem;
+}
+.modal-reserva__texto { color: #e3d6ff; font-size: 1.3rem; }
+.modal-reserva__detalle {
+  margin: 1rem 0 1.6rem;
+  min-height: 1.2em;
+  font-family: var(--ui); font-size: .75rem;
+  color: var(--magenta);
+  text-shadow: 0 0 8px rgba(255, 45, 149, .7);
+}
+
+/* el contenido entra escalonado */
+.modal-reserva__caja > * { opacity: 0; transform: translateY(12px); transition: opacity .4s ease, transform .4s ease; }
+.modal-reserva.is-open .modal-reserva__caja > * { opacity: 1; transform: none; }
+.modal-reserva.is-open .modal-reserva__caja > :nth-child(1) { transition-delay: .15s; }
+.modal-reserva.is-open .modal-reserva__caja > :nth-child(2) { transition-delay: .25s; }
+.modal-reserva.is-open .modal-reserva__caja > :nth-child(3) { transition-delay: .35s; }
+.modal-reserva.is-open .modal-reserva__caja > :nth-child(4) { transition-delay: .45s; }
+.modal-reserva.is-open .modal-reserva__caja > :nth-child(5) { transition-delay: .55s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .modal-reserva, .modal-reserva__caja, .modal-reserva__caja > * { transition: none; transform: none; }
+  .modal-reserva.is-open .modal-reserva__caja::before { animation: none; }
+}

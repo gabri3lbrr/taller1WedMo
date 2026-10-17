@@ -6,7 +6,7 @@ Landing de un teclado mecánico ficticio con estética **synthwave**, hecha con 
 
 ## Cómo verla
 
-Abre `index.html` en el navegador, o levanta un servidor local:
+Abre `index.html` directamente en el navegador, o levanta un servidor local:
 
 ```bash
 python -m http.server 5500
@@ -14,28 +14,30 @@ python -m http.server 5500
 
 y entra a http://localhost:5500
 
-## Equipo y aportes
+## Estado y reparto
 
-| Integrante | Aporte |
-|------------|--------|
-| **Nico** | Hero completo: teclado interactivo 75% con el motor de luz por ondas, modos de luz y perilla, pantalla que muestra lo que escribes (con palabras por minuto), sonido de teclas con Web Audio, cielo de estrellas en canvas, sol retro, parallax, menú para celular e integración de las secciones. |
-| **Gabriel** | Base inicial del proyecto, video de fondo, barra de progreso del scroll, sección de switches (contenido y selección), ficha técnica y reserva con animación de entrada escalonada. |
-| **Cata** | Sección "Por dentro": vista explosionada del teclado por capas, panel de composición, corte interno del switch y animación ligada al scroll. Laboratorio de sonido en la sección de switches. |
-| **Seba** | Librería de animación (GSAP) para la ficha técnica y la reserva, y footer. *(en desarrollo)* |
+El trabajo está dividido por secciones entre los 4 integrantes. El detalle y las tareas pendientes están en **[TAREAS.md](TAREAS.md)**.
+
+| Sección | Responsable | Estado |
+|---------|-------------|--------|
+| Hero + teclado interactivo | Nicowo | ✅ Terminada |
+| Switches (+ video y barra de progreso) | Gabriel | 🟡 Falta pulir |
+| Por dentro | Cata | ⬜ Por hacer |
+| Especificaciones + Reserva | Seba | ⬜ Por hacer |
 
 ## Requisitos del enunciado
 
-| # | Requisito | Dónde se cumple |
-|---|-----------|-----------------|
-| 1 | Presentación del producto | Hero, Por dentro, Switches, Ficha técnica y Reserva |
-| 2 | Animación de fondo | Hero: video synthwave con desenfoque, estrellas en `<canvas>` y sol detrás del video |
-| 3 | Animación por eventos | Teclas con teclado, mouse y touch; modos de luz; elección de switch; capas de "Por dentro" |
-| 4 | Animación por scroll | Barra de progreso, parallax del hero, vista explosionada de "Por dentro" |
-| 5 | Entrada / transición | Entrada del hero, cambio de color al elegir switch, aparición escalonada de ficha técnica y reserva |
-| 6 | Animación propia (JS) | **Motor de luz por ondas** del teclado (`js/script.js`, sección 2) |
-| 7 | Responsive | Todas las secciones se adaptan a celular; en el celular se puede escribir con el teclado del teléfono |
+| # | Requisito | Dónde | Estado |
+|---|-----------|-------|--------|
+| 1 | Presentación del producto | Hero + Switches (+ Por dentro y Specs) | ✅ |
+| 2 | Animación de fondo | Hero: video synthwave con desenfoque, estrellas en `<canvas>`, sol detrás del video (`mix-blend-mode: screen`) | ✅ |
+| 3 | Animación por eventos | Hero: teclas con `keydown`/`pointerdown`, perilla, modos, inclinación y linterna con el mouse. Switches: elección de switch | ✅ |
+| 4 | Animación por scroll | Barra de progreso y parallax del hero ✅ · Por dentro (Cata) ⬜ | 🟡 |
+| 5 | Entrada / transición | Hero: secuencia de entrada y onda de luz inicial; cambio de color al elegir switch ✅ · Specs/Reserva (Seba) ⬜ | 🟡 |
+| 6 | Animación propia (JS) | **Motor de luz por ondas** (`js/script.js`, sección 2) | ✅ |
+| 7 | Responsive | Hero y Switches ✅ · resto de secciones ⬜ | 🟡 |
 
-### Animación propia: motor de luz por ondas
+### La animación propia: motor de luz por ondas
 
 Cada pulsación crea una onda circular que se expande desde la tecla. La luz de cada tecla depende de su distancia `d` al frente de la onda:
 
@@ -44,14 +46,22 @@ r(t) = v · (t − t0)
 luz  = A · e^(−(d − r)² / w²) · (1 − edad/vida)
 ```
 
-A eso se suma el modo de luz elegido (Ola, Pulso, Fijo) y una "linterna" que sigue al cursor. El color promedio de todas las teclas alimenta la tira de luz frontal y el reflejo bajo el teclado.
+Sobre eso se suman el modo de luz elegido (Ola, Pulso, Fijo) y la "linterna" del cursor. El color promedio de todas las teclas alimenta la tira de luz frontal, el reflejo bajo el teclado y la perilla.
 
-## Estilo
+## Diseño
 
-- Tipografía pixel: **Press Start 2P** (títulos), **Silkscreen** (botones y etiquetas) y **VT323** (texto).
-- Paleta synthwave: noche violeta, magenta, cian y el ámbar del sol.
-- Esquinas rectas y bordes de 2 px en todos los controles.
-- Respeta `prefers-reduced-motion`: con movimiento reducido el fondo parte en pausa.
+El hero se revisó con las Human Interface Guidelines de Apple (accesibilidad, contraste, tamaños táctiles,
+movimiento). El detalle, con citas y medidas, está en [docs/revision-diseno-hero.md](docs/revision-diseno-hero.md).
+
+Se probaron 4 direcciones para el hero (Vitrina, Arcade 80s, Editorial y Vaporwave pastel) y se eligió
+**Editorial**: en pantallas anchas, el texto va a la izquierda y el teclado flota en isométrico a la derecha,
+delante del sol. En el celular queda en una columna. Las capturas de las 4 están en [docs/propuestas/](docs/propuestas/).
+Para el teclado se compararon 4 estilos (Cristal, Negro RGB, Blanco perla, Retro 80s) y 3 ángulos;
+se eligió **Negro RGB, de frente**: teclas negro mate con leyendas que brillan del color de la luz.
+Comparación en [docs/propuestas/teclado/](docs/propuestas/teclado/).
+Para la tipografía se probaron 4 combinaciones y se eligió **pixel arcade**: Press Start 2P (títulos),
+Silkscreen (botones y etiquetas) y VT323 (texto), con selectores de esquinas rectas.
+Ejemplos en [docs/propuestas/fuentes/](docs/propuestas/fuentes/).
 
 ## Estructura
 
@@ -65,3 +75,5 @@ A eso se suma el modo de luz elegido (Ola, Pulso, Fijo) y una "linterna" que sig
 ├── docs/capturas/
 └── TAREAS.md
 ```
+
+Respeta `prefers-reduced-motion`.
