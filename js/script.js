@@ -1,6 +1,12 @@
+/* =========================================================
+   KEYWAVE 75 — interacción y animaciones (sin librerías)
+   ========================================================= */
+
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const clamp = (v, min = 0, max = 1) => Math.min(max, Math.max(min, v));
 
+/* 1. Distribución del teclado 75% (ancho total: 16 unidades)
+   [leyenda, event.code, ancho, carácter que escribe] */
 const LETTERS = (s) => [...s].map((c) => [c, "Key" + c, 1, c.toLowerCase()]);
 const DIGITS = [..."1234567890"].map((d) => [d, "Digit" + d, 1, d]);
 
@@ -73,6 +79,11 @@ function ajustarLeyendas() {
 }
 document.fonts.ready.then(ajustarLeyendas);
 
+/* 2. Motor de luz (animación propia del equipo)
+   Cada pulsación crea una onda circular que se expande desde la tecla.
+   La luz de cada tecla depende de su distancia d al frente de la onda:
+       r(t) = v · (t − t0)
+       luz  = A · e^(−(d − r)² / w²) · (1 − edad/vida) */
 const state = {
   mode: "reactivo",
   hue: 330,
@@ -187,6 +198,7 @@ if (conMouse && !reduceMotion) {
   });
 }
 
+/* 3. Sonido sintetizado (Web Audio, sin archivos) */
 let audio = null;
 let noiseBuffer = null;
 
@@ -242,6 +254,7 @@ function playClick(kind = state.switchType, pitch = 1) {
   }
 }
 
+/* 4. Pulsar y soltar teclas (teclado físico, mouse, touch y teclado del celular) */
 const screenText = document.getElementById("screen-text");
 const screenPpm = document.getElementById("screen-ppm");
 let typed = "";
@@ -361,6 +374,7 @@ const endPointer = (e) => {
 ["pointerup", "pointercancel", "pointerleave"].forEach((t) => board.addEventListener(t, endPointer));
 window.addEventListener("pointerup", endPointer);
 
+/* 5. Modos de luz, perilla y sonido */
 const MODES = ["reactivo", "ola", "respira", "estatico"];
 const modeButtons = document.querySelectorAll(".mode");
 const segmentado = document.getElementById("modos");
@@ -400,6 +414,7 @@ soundBtn.addEventListener("click", () => {
   soundBtn.setAttribute("aria-pressed", state.sound);
 });
 
+/* 6. Selector de switches (cambia color y sonido del teclado) */
 const tarjetasSwitch = document.querySelectorAll(".switch-card, .inside-switch-option");
 const estadoSwitch = document.getElementById("switch-estado");
 const nombresSwitch = { tactile: "Neon Violet", linear: "Plasma Blue", silent: "Cyber Yellow" };
@@ -436,6 +451,7 @@ tarjetasSwitch.forEach((tarjeta) => {
   });
 });
 
+/* 7. Cielo de estrellas (canvas, animación de fondo) */
 const canvas = document.getElementById("stars");
 const ctx2d = canvas.getContext("2d");
 let stars = [];
@@ -509,6 +525,7 @@ new IntersectionObserver(([e]) => {
   if (skyVisible && !was && !reduceMotion && !fondoPausado) requestAnimationFrame(drawSky);
 }).observe(canvas);
 
+/* 8. Animaciones ligadas al scroll (barra de progreso, parallax, sol) */
 const nav = document.getElementById("nav");
 const hero = document.querySelector(".hero");
 const scene = document.getElementById("scene");
@@ -565,6 +582,7 @@ window.addEventListener("scroll", () => {
 }, { passive: true });
 onScroll();
 
+/* 9. Menú en celulares */
 const navToggle = document.getElementById("nav-toggle");
 const menu = document.getElementById("menu-principal");
 function cerrarMenu() {
@@ -581,37 +599,11 @@ menu.querySelectorAll("a").forEach((a) => a.addEventListener("click", cerrarMenu
 
 
 
+/* 10. Reserva y ficha técnica (entrada escalonada al aparecer) */
 function confirmarReserva(event) {
   event.preventDefault();
   alert('¡Reserva completada! Tu orden de KEYWAVE 75 ha sido registrada con éxito.');
 }
-
-
-document.addEventListener("DOMContentLoaded", () => {
-  const elementsToReveal = document.querySelectorAll(".text-cyber-reveal");
-
-  const revealObserver = new IntersectionObserver(
-    (entries, observer) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const cards = Array.from(document.querySelectorAll(".specs-grid .spec-card"));
-          const index = cards.indexOf(entry.target);
-          
-          const delay = index >= 0 ? index * 120 : 0;
-
-          setTimeout(() => {
-            entry.target.classList.add("is-visible");
-          }, delay);
-
-          observer.unobserve(entry.target);
-        }
-      });
-    },
-    { threshold: 0.15 }
-  );
-
-  elementsToReveal.forEach((el) => revealObserver.observe(el));
-});
 
 
 document.addEventListener("DOMContentLoaded", () => {
