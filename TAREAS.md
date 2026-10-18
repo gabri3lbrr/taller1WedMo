@@ -3,12 +3,20 @@
 Somos 4. Cada uno se hace cargo de una sección y la deja terminada en su propia rama.
 Los nombres son una propuesta: si quieren cambiar de sección, se cambia acá.
 
-| Sección | Responsable | Estado |
-|---------|-------------|--------|
+| Sección | Hizo | Estado |
+|---------|------|--------|
 | Hero + teclado interactivo | Nicowo | ✅ Terminada |
-| Switches (+ video de fondo y barra de progreso) | Gabriel | 🟡 Base lista, falta pulir |
-| Por dentro | Cata | ⬜ Por hacer |
-| Especificaciones + Reserva | Seba | ⬜ Por hacer |
+| Por dentro (vista explosionada + corte del switch) | Cata | ✅ Terminada |
+| Switches (+ laboratorio de sonido) | Gabriel y Cata | ✅ Terminada |
+| Ficha técnica + Reserva | Gabriel | ✅ Terminada |
+| Librería de animación (GSAP) + modal de reserva | Seba | ✅ Terminada |
+
+## Lo que falta
+
+- [x] **Librería de animación** (RA1, 5%): GSAP anima los contadores de la ficha técnica, el precio y el stock.
+- [x] **Reserva:** el `alert()` se reemplazó por un mensaje dentro de la página.
+- [ ] **Probar todo en un celular real** (sonido, teclado del teléfono, Por dentro).
+- [ ] **Preparar la presentación:** cada uno explica su sección (el enunciado lo pide).
 
 Todo va en `index.html`, `css/style.css` y `js/script.js` (el enunciado pide archivos separados).
 

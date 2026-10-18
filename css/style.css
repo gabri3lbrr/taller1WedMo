@@ -468,14 +468,6 @@ a { color: inherit; }
   to { opacity: 1; transform: none; }
 }
 
-.pendiente {
-  min-height: 60vh;
-  display: grid; place-content: center; gap: .8rem;
-  padding: 6rem clamp(1rem, 5vw, 4rem);
-  text-align: center;
-}
-.pendiente p { color: var(--muted); }
-
 .switches {
   padding: clamp(5rem, 12vw, 9rem) clamp(1rem, 5vw, 4rem);
   max-width: 1200px; margin: 0 auto;

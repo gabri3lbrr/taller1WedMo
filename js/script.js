@@ -630,33 +630,6 @@ document.addEventListener("DOMContentLoaded", () => {
     (entries, observer) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          const cards = Array.from(document.querySelectorAll(".specs-grid .spec-card"));
-          const index = cards.indexOf(entry.target);
-          
-          const delay = index >= 0 ? index * 120 : 0;
-
-          setTimeout(() => {
-            entry.target.classList.add("is-visible");
-          }, delay);
-
-          observer.unobserve(entry.target);
-        }
-      });
-    },
-    { threshold: 0.15 }
-  );
-
-  elementsToReveal.forEach((el) => revealObserver.observe(el));
-});
-
-
-document.addEventListener("DOMContentLoaded", () => {
-  const elementsToReveal = document.querySelectorAll(".text-cyber-reveal");
-
-  const revealObserver = new IntersectionObserver(
-    (entries, observer) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
           const target = entry.target;
           
           const container = target.closest(".reservar-card") || target.closest(".specs-container");
@@ -1260,6 +1233,21 @@ document.addEventListener("DOMContentLoaded", () => {
     const meta = parseFloat(el.dataset.meta);
     const duracion = Number(el.dataset.duracion || 1600);
     if (reduceMotion) { el.textContent = formato(el, meta); return; }
+    // Con GSAP (librería de animación) el número se interpola con su easing "expo.out"
+    if (window.gsap) {
+      const n = { v: 0 };
+      gsap.to(n, {
+        v: meta,
+        duration: duracion / 1000,
+        delay: retardo / 1000,
+        ease: "expo.out",
+        onStart: () => el.classList.add("contando"),
+        onUpdate: () => (el.textContent = formato(el, n.v)),
+        onComplete: () => { el.classList.remove("contando"); el.classList.add("listo"); },
+      });
+      return;
+    }
+    // Respaldo sin GSAP: mismo efecto con requestAnimationFrame
     setTimeout(() => {
       el.classList.add("contando");
       const t0 = performance.now();
